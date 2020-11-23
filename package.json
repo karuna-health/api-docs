@@ -1,0 +1,26 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "dependencies": {
+    "@redocly/openapi-cli": "^1.0.0-beta.22",
+    "husky": "^4.3.0",
+    "prettier": "^2.2.0",
+    "redoc-cli": "^0.10.1"
+  },
+  "private": true,
+  "scripts": {
+    "start": "openapi preview-docs",
+    "bundle": "openapi bundle -o dist",
+    "test": "openapi lint",
+    "generate-html": "redoc-cli bundle dist.yaml -o docs/index.html",
+    "build": "yarn bundle && yarn generate-html"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn test && yarn build && git add dist.yaml docs/index.html"
+    }
+  },
+  "prettier": {
+    "proseWrap": "always"
+  }
+}
