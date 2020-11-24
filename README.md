@@ -4,38 +4,35 @@
 
 ### Install
 
-1. Install [Node JS](https://nodejs.org/).
-2. Clone this repo and run `npm install` in the repo root.
+1. Install [Node JS](https://nodejs.org/) and [Yarn](https://yarnpkg.com/).
+2. Clone this repo and run `yarn` in the repo root.
+
+### Deploy
+
+There's a pre-commit hook setup with `husky` to validate the api definition and generate the updated html file. Updating the master branch in origin triggers a github page rebuild.
 
 ### Usage
 
-#### `npm start`
+#### `yarn start`
 Starts the reference docs preview server.
 
-#### `npm run build`
-Bundles the definition to the dist folder.
+#### `yarn bundle`
+Bundles the definition to dist.yaml in the root folder.
 
-#### `npm test`
+#### `yarn generate-html`
+Bundles dist.yaml into a zero-dependency html file located in docs/index.html.
+
+#### `yarn build`
+Runs `yarn bundle && yarn generate-html`
+
+#### `yarn test`
 Validates the definition.
-
-## Contribution Guide
-
-Below is a sample contribution guide. The tools
-in the repository don't restrict you to any
-specific structure. Adjust the contribution guide
-to match your own structure. However, if you
-don't have a structure in mind, this is a
-good place to start.
-
-Update this contribution guide if you
-adjust the file/folder organization.
 
 The `.redocly.yaml` controls settings for various
 tools including the lint tool and the reference
 docs engine.  Open it to find examples and
 [read the docs](https://redoc.ly/docs/cli/configuration/)
 for more information.
-
 
 ### Schemas
 
