@@ -1,0 +1,6 @@
+type: apiKey
+in: header
+name: X-User-Token
+description:
+  A token identifying the user making the request. You can obtain this token
+  with a `service_token` and the correct credentials.

@@ -1,0 +1,53 @@
+get:
+  tags:
+    - User Tokens
+  operationId: tokenCheck
+  summary: Token validity
+  description:
+    Checks the validity of a short-lived or lifetime `user_token`, as specified
+    in the `X-User-Token` header.
+  security:
+    - user_token: []
+      service_token: []
+  responses:
+    200:
+      description: Valid `service_token` AND `user_token`
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              kind:
+                description: Kind of entity owning the user token
+                type: string
+                enum: [patient, navigator]
+              identifier:
+                description: Entity's unique identifier
+                type: string
+              organization:
+                description: Organization to which the entity belongs
+                type: string
+          example:
+            kind: navigator
+            identifier: "21348"
+            organization: "karuna"
+    401:
+      description: Invalid `service_token` OR `user_token`
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: Type of error
+                type: string
+              error_code:
+                description: Error code
+                type: number
+              message:
+                description: Token that was verified as invalid
+                type: string
+          example:
+            error: "bad_user_token"
+            error_code: 7943
+            message: "asdasdf-sdf234-422g"

@@ -35,52 +35,119 @@ info:
     communicate with members of their care team using different Channels they
     already have access to (e.g., phone calls, SMS, email, etc.).
 
-    # Introduction
+    ### Navigators
 
-    ## something else
+    Navigators are the care providers who provide services to their patients. A
+    navigator can participate in conversations with their patients using
+    Karuna's platform, and have all of their interactions via different channels
+    represented in a single shared inbox per patient.
 
-    This API definition is intended to to be a good starting point for
-    describing your API in 
+    ### Care Teams
 
-    [OpenAPI/Swagger
-    format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md).
+    Navigators and Patients are connected to each other in Karuna via Care
+    Teams. A Care Team Member represents a single relationship between a
+    Navigator and a Patient. This allows Navigators to have multiple Patients,
+    and for a Patient to have multiple Navigators.
 
-    It also demonstrates features of
-    [create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool
-    and 
+    ### Channels
 
-    [Redoc](https://github.com/Redocly/Redoc) documentation engine. So beyond
-    the standard OpenAPI syntax we use a few 
+    A Channel in Karuna represents a contact method for a given Patient.
+    Patients can have multiple Channels of different types (sources),
+    representing different ways messages can flow to and from a Patient. For
+    example, a given Patient's channels might include a landline, a cell phone
+    number, and two email addresses.
 
-    [vendor
-    extensions](https://github.com/Redocly/Redoc/blob/master/docs/redoc-vendor-extensions.md).
+    ### Interactions
+
+    An Interaction in Karuna represents a high-level unit of communication
+    between a Navigator and Patient, as seen by the Navigator. If a Navigator
+    wants to send an SMS to a Patient, they will create an Interaction
+    representing the intent to deliver this message to the Patient via
+    particular patient Channel. Karuna's platform will then translate the
+    Interaction into an actual Message which will get delivered to the Patient
+    via the correct Channel. Similarly, an incoming Message from a Patient will
+    have an associated Interaction created post-hoc.
 
 
-    # OpenAPI Specification
+    Interactions represent all possible conceptual interactions between Patients
+    and Navigators on Karuna's platform, including phone calls, missed calls,
+    SMS messages, emails, etc.
 
-    The goal of The OpenAPI Specification is to define a standard,
-    language-agnostic interface to REST APIs which
+    ### Messages
 
-    allows both humans and computers to discover and understand the capabilities
-    of the service without access to source
-
-    code, documentation, or through network traffic inspection. When properly
-    defined via OpenAPI, a consumer can 
-
-    understand and interact with the remote service with a minimal amount of
-    implementation logic. Similar to what
-
-    interfaces have done for lower-level programming, OpenAPI removes the
-    guesswork in calling the service.
-tags:
-  - name: Echo
-    description: Example echo operations
-  - name: User
-    description: Operations about user
+    A message represents an actual instance of a delivered or received message
+    on Karuna's platform. Messages can be created via Interactions (if
+    originated on Karuna's platform and delivered outbound to the Patient), or
+    they can be created via an incoming response from a Patient.
 servers:
-  - url: 'http://example.com/api/v1'
-  - url: 'https://example.com/api/v1'
+  - url: 'https:asdf'
+    description: Development server
+  - url: 'https:asdf2'
+    description: Production server
+tags:
+  - name: User Tokens
+    description: These endpoints allow you to obtain a `user_token` and check its validity.
+  - name: Echo
+    description: These endpoints allow you to obtain a `user_token` and check its validity.
+  - name: User
+    description: These endpoints allow you to obtain a `user_token` and check its validity.
 paths:
+  /tokens/check:
+    get:
+      tags:
+        - User Tokens
+      operationId: tokenCheck
+      summary: Token validity
+      description: >-
+        Checks the validity of a short-lived or lifetime `user_token`, as
+        specified in the `X-User-Token` header.
+      security:
+        - user_token: []
+          service_token: []
+      responses:
+        '200':
+          description: Valid `service_token` AND `user_token`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  kind:
+                    description: Kind of entity owning the user token
+                    type: string
+                    enum:
+                      - patient
+                      - navigator
+                  identifier:
+                    description: Entity's unique identifier
+                    type: string
+                  organization:
+                    description: Organization to which the entity belongs
+                    type: string
+              example:
+                kind: navigator
+                identifier: '21348'
+                organization: karuna
+        '401':
+          description: Invalid `service_token` OR `user_token`
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    description: Type of error
+                    type: string
+                  error_code:
+                    description: Error code
+                    type: number
+                  message:
+                    description: Token that was verified as invalid
+                    type: string
+              example:
+                error: bad_user_token
+                error_code: 7943
+                message: asdasdf-sdf234-422g
   '/users/{username}':
     parameters:
       - name: pretty_print
@@ -108,10 +175,6 @@ paths:
           description: Filter users without email
           schema:
             type: boolean
-      security:
-        - main_auth:
-            - 'read:users'
-        - api_key: []
       responses:
         '200':
           description: Success
@@ -139,9 +202,6 @@ paths:
           required: true
           schema:
             type: string
-      security:
-        - main_auth:
-            - 'write:users'
       responses:
         '200':
           description: OK
@@ -166,9 +226,6 @@ paths:
       summary: Echo test
       description: Receive the exact message you've sent
       operationId: echo
-      security:
-        - api_key: []
-        - basic_auth: []
       responses:
         '200':
           description: OK
@@ -207,21 +264,21 @@ paths:
         required: true
 components:
   securitySchemes:
-    main_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: 'http://example.com/api/oauth/dialog'
-          scopes:
-            'read:users': read users info
-            'write:users': modify or remove users
-    api_key:
+    user_token:
       type: apiKey
       in: header
-      name: api_key
-    basic_auth:
-      type: http
-      scheme: basic
+      name: X-User-Token
+      description: >-
+        A token identifying the user making the request. You can obtain this
+        token with a `service_token` and the correct credentials.
+    service_token:
+      type: apiKey
+      in: header
+      name: X-Service-Token
+      description: >-
+        A token identifying the service or organization making the request. This
+        token is global to your organization, and will be provided to you by
+        Karuna.
   schemas:
     Email:
       description: User email address

@@ -1,0 +1,6 @@
+type: apiKey
+in: header
+name: X-Service-Token
+description:
+  A token identifying the service or organization making the request. This token
+  is global to your organization, and will be provided to you by Karuna.
