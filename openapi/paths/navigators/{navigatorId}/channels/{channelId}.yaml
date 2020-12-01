@@ -20,6 +20,8 @@ patch:
             $ref: "../../../../components/schemas/Channel.yaml"
     401:
       $ref: "../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../components/responses/ResourceNotFound.yaml"
 
 delete:
   tags:
@@ -48,7 +50,7 @@ delete:
   responses:
     200:
       description: Navigator channel deleted
-    404:
-      $ref: "../../../../components/responses/ResourceNotFound.yaml"
     401:
       $ref: "../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../components/responses/ResourceNotFound.yaml"

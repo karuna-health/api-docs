@@ -10,7 +10,7 @@
 - [ ] /organizations/{slug} includes `check_passwords_against_leaks` in the response. Do we actually do anything with it?
 - [ ] /organizations/{slug} includes `phone_login_enabled` in the response. I don't know what this does and didn't know what to write as a description.
 - [ ] GET /navigators includes "meta.data_key" in the response, but we do nothing with it. Didn't add description.
-- [ ] what are the possible values for /components/parameters/NavigatorsQuerySortKey?
+- [ ] what are the possible values for sort[key] when fetching Navigators?
 - [ ] Channel schema includes `verified`. I'm not sure what that is
 - [ ] Channel schema includes `uuid`. I'm not sure what that is
 - [ ] Channel schema includes `authenticated`. I'm not sure what that is
