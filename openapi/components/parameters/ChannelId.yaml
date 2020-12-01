@@ -1,0 +1,7 @@
+in: path
+name: channelId
+description: Channel ID
+schema:
+  type: number
+required: true
+example: 173

@@ -1,0 +1,8 @@
+in: query
+name: sort[order]
+description: Order in which results will be sorted.
+schema:
+  type: string
+  enum: [asc, desc]
+  example: "asc"
+required: false

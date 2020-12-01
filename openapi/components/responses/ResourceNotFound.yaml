@@ -1,0 +1,22 @@
+description: Resource not found
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        error:
+          description: Type of error
+          type: string
+          example: "resource_not_found"
+        error_code:
+          description: Error code
+          type: string
+          example: 191
+        message:
+          description: Error message
+          type: string
+          example: "Couldn't find that Resource"
+        retryable:
+          description: Whether the request is retryable
+          type: boolean
+          example: false

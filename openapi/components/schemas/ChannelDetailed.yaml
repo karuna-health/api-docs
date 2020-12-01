@@ -1,0 +1,13 @@
+type: object
+description: Channel details including `owner_type` and `owner_id`
+properties:
+  $ref: "./sharedProperties/Channel.yaml"
+  owner_type:
+    type: string
+    description: Type of entity that owns the channel
+    enum: [patient, navigator, circle_of_care_member]
+    example: navigator
+  owner_id:
+    type: number
+    description: ID of entity that owns the channel
+    example: 1232

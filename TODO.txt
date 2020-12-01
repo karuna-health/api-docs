@@ -1,4 +1,0 @@
-[] update license
-[] Add "Example Workflows"?
-[] Update servers urls
-[] Maybe remove "kind" parameter from tokenCheck response

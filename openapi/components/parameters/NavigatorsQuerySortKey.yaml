@@ -1,0 +1,8 @@
+in: query
+name: sort[key]
+description: Key by which results will be sorted.
+schema:
+  type: string
+  enum: [name, created_at]
+  example: "name"
+required: false

@@ -1,0 +1,22 @@
+description: Invalid `service_token` or `user_token`
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        error:
+          description: Type of error
+          type: string
+          example: "bad_user_token"
+        error_code:
+          description: Error code
+          type: string
+          example: 7943
+        message:
+          description: Error message
+          type: string
+          example: "bea198df-27fa-4190-bbe2-25197259d9a2d"
+        retryable:
+          description: Whether the request is retryable
+          type: boolean
+          example: false

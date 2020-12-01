@@ -1,0 +1,19 @@
+type: object
+description: Pagination data
+properties:
+  results:
+    type: number
+    description: Number of results included per page
+    example: 10
+  total:
+    type: number
+    description: Total count of results found for query
+    example: 512
+  page:
+    type: number
+    description: Current results page
+    example: 3
+  next:
+    type: string
+    description: Pointer to next results page. `null` if there is no next page.
+    example: "05d9a970030000000a04"

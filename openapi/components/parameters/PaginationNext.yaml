@@ -1,0 +1,9 @@
+in: query
+name: next
+description:
+  Pointer to next results page. If not specified, the first results page is
+  returned.
+schema:
+  type: string
+  example: "43bfa6a3010000001902"
+required: false

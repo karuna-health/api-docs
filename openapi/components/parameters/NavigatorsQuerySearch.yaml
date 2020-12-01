@@ -1,0 +1,7 @@
+in: query
+name: search
+description: Navigator names will be queried for an exact match to this string.
+schema:
+  type: string
+  example: "gual"
+required: false

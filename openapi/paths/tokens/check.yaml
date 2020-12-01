@@ -2,7 +2,7 @@ get:
   tags:
     - User Tokens
   operationId: tokenCheck
-  summary: Token validity
+  summary: Token Validity
   description:
     Checks the validity of a short-lived or lifetime `user_token`, as specified
     in the `X-User-Token` header.
@@ -21,33 +21,14 @@ get:
                 description: Kind of entity owning the user token
                 type: string
                 enum: [patient, navigator]
+                example: navigator
               identifier:
                 description: Entity's unique identifier
                 type: string
+                example: "21348"
               organization:
                 description: Organization to which the entity belongs
                 type: string
-          example:
-            kind: navigator
-            identifier: "21348"
-            organization: "karuna"
+                example: "karuna"
     401:
-      description: Invalid `service_token` OR `user_token`
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                description: Type of error
-                type: string
-              error_code:
-                description: Error code
-                type: number
-              message:
-                description: Token that was verified as invalid
-                type: string
-          example:
-            error: "bad_user_token"
-            error_code: 7943
-            message: "asdasdf-sdf234-422g"
+      $ref: "../../components/responses/NotAuthorized.yaml"

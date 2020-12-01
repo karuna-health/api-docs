@@ -1,0 +1,78 @@
+post:
+  tags:
+    - User Tokens
+  operationId: getNavigatorToken
+  summary: Get Navigator Token
+  description: Trade Navigator's credentials for a short-lived `user_token`.
+
+
+    Send this user_token as the X-User-Token header in future requests to
+    authenticate. This token is valid for 30 minutes, and is extended for
+    another 30 minutes with every use.
+  security:
+    - service_token: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            navigator:
+              type: object
+              properties:
+                handle:
+                  description: Unique navigator handle
+                  type: string
+                  example: "gcasas"
+                password:
+                  description:
+                    Password for the navigator handle belonging to the specified
+                    organization
+                  type: string
+                  example: "abc123password"
+            organization:
+              type: object
+              properties:
+                slug:
+                  type: string
+                  example: "karuna"
+                  description: Organization slug
+  responses:
+    200:
+      description: Valid navigator credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ip:
+                type: object
+                properties:
+                  raw:
+                    type: string
+                    description: Raw ip address
+                    example: "1.1.1.1"
+                  masked:
+                    type: string
+                    description: Masked ip address
+                    example: "1.1.1.1"
+              message:
+                type: string
+                description: Response message
+                example: "login_successful"
+              token:
+                type: string
+                description: Authenticated Navigator's `user_token`
+                example: "ff710fbb-9fb2-43ef-9a26-70e026572362"
+    401:
+      description: Invalid navigator credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: Type of error
+                type: string
+                example: "invalid_handle_or_password"

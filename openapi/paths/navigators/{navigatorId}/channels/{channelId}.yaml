@@ -1,0 +1,54 @@
+patch:
+  tags:
+    - Channels
+    - Navigators
+  operationId: patchNavigatorChannel
+  summary: Patch Navigator Channel
+  description: Update Navigator Channel Details
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../components/parameters/NavigatorId.yaml"
+    - $ref: "../../../../components/parameters/ChannelId.yaml"
+  responses:
+    200:
+      description: Navigator channel updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/schemas/Channel.yaml"
+    401:
+      $ref: "../../../../components/responses/NotAuthorized.yaml"
+
+delete:
+  tags:
+    - Channels
+    - Navigators
+  operationId: deleteNavigatorChannel
+  summary: Delete Navigator Channel
+  description: Delete Navigator Channel
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../components/parameters/NavigatorId.yaml"
+    - $ref: "../../../../components/parameters/ChannelId.yaml"
+  requestBody:
+    description: Channel details to be updated
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            channel:
+              $ref: "../../../../components/schemas/Channel.yaml"
+
+  responses:
+    200:
+      description: Navigator channel deleted
+    404:
+      $ref: "../../../../components/responses/ResourceNotFound.yaml"
+    401:
+      $ref: "../../../../components/responses/NotAuthorized.yaml"

@@ -1,0 +1,66 @@
+get:
+  tags:
+    - Navigators
+  operationId: getNavigator
+  summary: Get Navigator
+  description: Get all navigator details
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../components/parameters/NavigatorId.yaml"
+  responses:
+    200:
+      description: Navigator details
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/NavigatorDetailed.yaml"
+
+    401:
+      $ref: "../../../components/responses/NotAuthorized.yaml"
+
+    404:
+      $ref: "../../../components/responses/ResourceNotFound.yaml"
+
+patch:
+  tags:
+    - Navigators
+  operationId: patchNavigator
+  summary: Patch Navigator
+  description: Update navigator details
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - in: path
+      name: navigatorId
+      description: Navigator ID
+      schema:
+        type: number
+      required: true
+      example: 1241
+  requestBody:
+    description: Navigator details to be updated
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            navigator:
+              $ref: "../../../components/schemas/Navigator.yaml"
+  responses:
+    200:
+      description: Navigator details
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              navigator:
+                $ref: "../../../components/schemas/NavigatorDetailed.yaml"
+    401:
+      $ref: "../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../components/responses/ResourceNotFound.yaml"

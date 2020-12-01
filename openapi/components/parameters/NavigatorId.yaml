@@ -1,0 +1,7 @@
+in: path
+name: navigatorId
+description: Navigator ID
+schema:
+  type: number
+required: true
+example: 1241

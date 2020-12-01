@@ -1,0 +1,29 @@
+- [ ] update license
+- [ ] Add "Example Workflows"?
+- [ ] Update servers urls
+- [ ] Maybe remove "kind" parameter from tokenCheck response
+- [ ] Do we really need the ip object in the response when authenticating a navigator?
+- [ ] We never use the retryable param in the response, do we need to include it?
+- [ ] /organizations/{slug} includes `twofactor_enabled` in the response, but we do nothing with it.
+- [ ] /organizations/{slug} includes `write_ehr_changes` in the response, but we do nothing with it.
+- [ ] /organizations/{slug} includes `disable_ip_pinning` in the response, but we do nothing with it. I also didn't know what to write as a description.
+- [ ] /organizations/{slug} includes `check_passwords_against_leaks` in the response. Do we actually do anything with it?
+- [ ] /organizations/{slug} includes `phone_login_enabled` in the response. I don't know what this does and didn't know what to write as a description.
+- [ ] GET /navigators includes "meta.data_key" in the response, but we do nothing with it. Didn't add description.
+- [ ] what are the possible values for /components/parameters/NavigatorsQuerySortKey?
+- [ ] Channel schema includes `verified`. I'm not sure what that is
+- [ ] Channel schema includes `uuid`. I'm not sure what that is
+- [ ] Channel schema includes `authenticated`. I'm not sure what that is
+- [ ] Channel schema includes `meta.type`. I'm not sure what that is. Didn't add description.
+- [ ] Channels sometimes include `owner_type` and `owner_id` and sometimes they don't. Could we make this consistent? We wrote a workaround for this in the frontend.
+- [ ] Navigator schema includes `clinician_id` which I believe we don't use. Didn't add description
+- [ ] Navigator schema includes `preferred_medium` which I believe we don't use. Didn't add description
+- [ ] When fetching the navigators list, we include the unread_mention_count but not unread_count nor unknown_count. When we fetch just one navigator, we include all 3 counts.
+- [ ] Specify which fields are required/valid when updating a ccm
+- [ ] Specify which fields are required/valid when creating a ccm
+- [ ] Specify which fields are required/valid when updating a patient
+- [ ] Specify which fields are required/valid when creating a patient
+- [ ] Specify which fields are required/valid when updating a navigator
+- [ ] Specify which fields are required/valid when creating a navigator
+- [ ] Specify which fields are required/valid when updating a channel
+- [ ] Specify which fields are required/valid when creating a channel

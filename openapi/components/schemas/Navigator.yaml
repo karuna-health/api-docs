@@ -1,0 +1,4 @@
+type: object
+description: Navigator Data
+properties:
+  $ref: "./sharedProperties/Navigator.yaml"

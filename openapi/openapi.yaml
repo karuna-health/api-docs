@@ -92,21 +92,33 @@ tags:
     description:
       These endpoints allow you to obtain a `user_token` and check its validity.
 
-  - name: Echo
+  - name: Organizations
+    description: Endpoints to manage organizations.
 
-    description:
-      These endpoints allow you to obtain a `user_token` and check its validity.
-  - name: User
-    description:
-      These endpoints allow you to obtain a `user_token` and check its validity.
+  - name: Navigators
+    description: Endpoints to manage navigators.
+
+  - name: Channels
+    description: Endpoints to manage channels.
 
 paths:
   /tokens/check:
-    $ref: "paths/user_tokens/tokens@check.yaml"
-  "/users/{username}":
-    $ref: "paths/users/{username}.yaml"
-  /echo:
-    $ref: paths/echo.yaml
+    $ref: "paths/tokens/check.yaml"
+
+  /navigators:
+    $ref: "paths/navigators/index.yaml"
+  /navigators/{navigatorId}:
+    $ref: "paths/navigators/{navigatorId}/index.yaml"
+  /navigators/{navigatorId}/channels:
+    $ref: "paths/navigators/{navigatorId}/channels/index.yaml"
+  /navigators/{navigatorId}/channels/{channelId}:
+    $ref: "paths/navigators/{navigatorId}/channels/{channelId}.yaml"
+  /navigators/token:
+    $ref: "paths/navigators/token.yaml"
+
+  /organizations/{slug}:
+    $ref: "paths/organizations/{slug}.yaml"
+
 components:
   securitySchemes:
     user_token:
