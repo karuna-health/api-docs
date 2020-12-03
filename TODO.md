@@ -70,3 +70,16 @@
 - [ ] Specify which fields are required/valid when creating a navigator
 - [ ] Specify which fields are required/valid when updating a channel
 - [ ] Specify which fields are required/valid when creating a channel
+
+- [ ] What's `extra` in the patient schema for? and what are some examples of it?
+- [ ] We're not using patient.mrn; do we want to keep it?
+- [ ] What are patient.source possible values?
+- [ ] What is patient.default_medium?
+- [ ] Add responses for when required fields are missing or fields are invalid
+- [ ] Make sure all requests with params have 404's
+- [ ] Create separate schema with patient properties in interaction.patient
+- [ ] What's interaction.spec.source and what are its possible values?
+- [ ] What's interaction.spec.incoming_message_id?
+- [ ] What's message.title?
+- [ ] What are all message.status possible values?
+- [ ] What's message.id_from_channel?

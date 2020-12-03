@@ -1,0 +1,28 @@
+get:
+  tags:
+    - Patients
+    - Interactions
+  operationId: getPatientInteractions
+  summary: List Patient Interactions
+  description: Get paginated list of patient interactions.
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../components/parameters/PatientId.yaml"
+    - $ref: "../../../../components/parameters/PaginationNext.yaml"
+  responses:
+    200:
+      description: Patient Interactions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              pagination:
+                $ref: "../../../../components/schemas/PaginatedResults.yaml"
+              interactions:
+                type: array
+                description: List of patient interactions
+                items:
+                  $ref: "../../../../components/schemas/Interaction.yaml"

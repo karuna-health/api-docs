@@ -1,23 +1,4 @@
-id:
-  type: number
-  description: Navigator's ID
-  example: 1234
-first_name:
-  type: string
-  description: Navigator's first name
-  example: Gual
-middle_name:
-  type: string
-  description: Navigator's Middle name
-  example: Antonio
-last_name:
-  type: string
-  description: Navigator's last name
-  example: Casas
-handle:
-  type: string
-  description: Navigator's handle
-  example: gcasas
+$ref: "./NavigatorSummary.yaml"
 role:
   type: string
   description: Navigator's role

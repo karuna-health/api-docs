@@ -1,0 +1,15 @@
+type: object
+description: Navigator ID with the last interaction ID the navigators has read
+properties:
+  navigator_id:
+    type: number
+    description: ID of navigator
+    example: 39478
+  last_read:
+    type: number
+    description: ID of last read interaction
+    example: 89712
+  read_at:
+    type: string
+    description: Timestamp of when the interaction was read
+    example: "2020-07-03T17:10:57.567Z"

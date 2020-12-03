@@ -16,9 +16,7 @@
     "build": "yarn bundle && yarn generate-html"
   },
   "husky": {
-    "hooks": {
-      "pre-commit": "yarn test && yarn build && git add dist.yaml docs/index.html"
-    }
+    "hooks": {}
   },
   "prettier": {
     "proseWrap": "always"

@@ -24,6 +24,7 @@ get:
                 $ref: "../../components/schemas/PaginatedResults.yaml"
               navigators:
                 type: array
+                description: List of navigators
                 items:
                   $ref: "../../components/schemas/Navigator.yaml"
               meta:

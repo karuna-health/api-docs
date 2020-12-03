@@ -1,15 +1,15 @@
 post:
   tags:
-    - Navigators
+    - Patients
     - Channels
-  operationId: postNavigatorChannel
-  summary: Create Navigator Channel
-  description: Create new channel for a navigator
+  operationId: postPatientChannel
+  summary: Create Patient Channel
+  description: Create new channel for a patient
   security:
     - service_token: []
       user_token: []
   parameters:
-    - $ref: "../../../../components/parameters/NavigatorId.yaml"
+    - $ref: "../../../../components/parameters/PatientId.yaml"
   requestBody:
     description: Details of channel to be created
     required: true
@@ -22,10 +22,12 @@ post:
               $ref: "../../../../components/schemas/Channel.yaml"
   responses:
     201:
-      description: Navigator channel created
+      description: Patient channel created
       content:
         application/json:
           schema:
             $ref: "../../../../components/schemas/Channel.yaml"
     401:
       $ref: "../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../components/responses/ResourceNotFound.yaml"

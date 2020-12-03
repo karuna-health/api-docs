@@ -1,0 +1,42 @@
+type: object
+description: Call details
+properties:
+  id:
+    type: number
+    description: Call ID
+    example: 12394
+  duration:
+    type: number
+    description: Call duration in seconds
+    example: 25
+  created_at:
+    type: string
+    description: Timestamp
+    example: 2020-11-23
+  recording_url:
+    type: string
+    description: URL to access the call recording if available
+    example: https://callrecording.com
+  transcript_url:
+    type: string
+    description: URL to access the call transcript if available
+    example: https://calltranscript.com
+  recording_source:
+    type: string
+    enum: [live, message]
+    description:
+      "live: call was answered by a patient; message: call went to voicemail"
+    example: live
+  subject:
+    type: string
+    description: Call subject
+    example: Transportation arrangement
+  summary:
+    type: string
+    description: Call summary
+    example: A taxi is picking them up at 14:20
+  recording_purged:
+    type: boolean
+    description:
+      Flag specifying whether the recording for the call has been purged
+    example: false

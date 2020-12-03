@@ -1,0 +1,42 @@
+type: object
+description: Interaction Data
+properties:
+  id:
+    type: number
+    description: Interaction ID
+    example: 98345
+  patient:
+    type: object
+    properties:
+      $ref: "./sharedProperties/PatientSummary.yaml"
+  navigator:
+    type: object
+    properties:
+      $ref: "./sharedProperties/NavigatorSummary.yaml"
+  spec:
+    type: object
+    properties:
+      call:
+        type: boolean
+        description: Flag specifying whether the interaction was a call
+        example: true
+      type:
+        type: string
+        description:
+          Specifies if the interaction was a message sent in the conversation or
+          an internal comment
+        enum: [conversation, comment]
+        example: conversation
+      source:
+        type: string
+        description: Dunno
+        example: nasdaq
+      incoming_message_id:
+        type: number
+        description: Dunno
+        example: 2345
+  messages:
+    type: array
+    description: List of interaction messages
+    items:
+      $ref: "./Message.yaml"

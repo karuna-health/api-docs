@@ -1,0 +1,14 @@
+delete:
+  tags:
+    - Navigators
+  operationId: invalidateNavigatorToken
+  summary: Invalidate navigator's user_token
+  description: Invalidate navigator's `user_token`
+  security:
+    - service_token: []
+      user_token: []
+  responses:
+    200:
+      description: Navigator's `user_token` successfully invalidated
+    401:
+      $ref: "../../components/responses/NotAuthorized.yaml"

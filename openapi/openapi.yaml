@@ -95,16 +95,42 @@ tags:
   - name: Organizations
     description: Endpoints to manage organizations.
 
+  - name: Patients
+    description: Endpoints to manage patients.
+
   - name: Navigators
     description: Endpoints to manage navigators.
 
   - name: Channels
     description: Endpoints to manage channels.
 
+  - name: Interactions
+    description: Endpoints to manage interactions.
+
 paths:
   /tokens/check:
     $ref: "paths/tokens/check.yaml"
 
+  /organizations/{slug}:
+    $ref: "paths/organizations/{slug}.yaml"
+
+  /patients:
+    $ref: "paths/patients/index.yaml"
+  /patients/{patientId}/channels:
+    $ref: "paths/patients/{patientId}/channels/index.yaml"
+  /patients/{patientId}/channels/{channelId}:
+    $ref: "paths/patients/{patientId}/channels/{channelId}.yaml"
+  /patients/{patientId}/interactions:
+    $ref: "paths/patients/{patientId}/interactions/index.yaml"
+
+  /navigators/token:
+    $ref: "paths/navigators/token.yaml"
+  /navigators/delete:
+    $ref: "paths/navigators/delete.yaml"
+  /navigators/reset_password:
+    $ref: "paths/navigators/reset_password.yaml"
+  /navigators/update_password:
+    $ref: "paths/navigators/update_password.yaml"
   /navigators:
     $ref: "paths/navigators/index.yaml"
   /navigators/{navigatorId}:
@@ -113,11 +139,6 @@ paths:
     $ref: "paths/navigators/{navigatorId}/channels/index.yaml"
   /navigators/{navigatorId}/channels/{channelId}:
     $ref: "paths/navigators/{navigatorId}/channels/{channelId}.yaml"
-  /navigators/token:
-    $ref: "paths/navigators/token.yaml"
-
-  /organizations/{slug}:
-    $ref: "paths/organizations/{slug}.yaml"
 
 components:
   securitySchemes:

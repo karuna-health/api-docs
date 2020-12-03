@@ -1,0 +1,185 @@
+type: object
+description: Patient Data
+properties:
+  $ref: "./sharedProperties/PatientSummary.yaml"
+  first_name:
+    type: string
+    description: Patient's first name
+    example: Gual
+  middle_name:
+    type: string
+    description: Patient's middle name
+    example: Antonio
+  last_name:
+    type: string
+    description: Patient's last name
+    example: Casas
+  gender:
+    type: string
+    enum: [unknown, male, female, other]
+    description: Patient's gender
+    example: male
+  country:
+    type: string
+    description: Patient's country
+    example: Mexico
+  state:
+    type: string
+    description: Patient's state
+    example: Coahuila
+  city:
+    type: string
+    description: Patient's city
+    example: Torreón
+  postal:
+    type: string
+    description: Patient's postal code
+    example: 27100
+  street_address:
+    type: string
+    description: Patient's street address
+    example: 8th Street
+  timezone:
+    type: string
+    description: Patient's timezone
+    example: Mexico_City
+  dob:
+    type: string
+    description: Patient's birthdate (YYYY-MM-DD)
+    example: 1991-10-02
+  photo:
+    type: string
+    description: Url to patient's photo
+    example: https://i.pravatar.cc/300
+  extra:
+    type: object
+    description: Extra properties to store
+  mrn:
+    type: string
+    description: Patient's Medical Record Number
+    example: 12342
+  care_team_members:
+    type: array
+    description: IDs of patient's Care Team Members
+    items:
+      type: number
+      description: ID of Care Team Member
+  primary_language:
+    type: string
+    description: Patient's primary language
+    example: spa
+  source:
+    type: string
+    description: Source from which the patient was created
+    example: file_upload
+  default_medium:
+    type: string
+    description: Dunno
+    example: Dunno
+  restricted:
+    type: boolean
+    description:
+      Flag specifying whether access to this patient should be restricted if
+      permissioning is enabled for the patient's organization
+    example: true
+  archive_event:
+    type: object
+    description: Information about archive/unarchive events
+    properties:
+      event_at:
+        type: string
+        description: Timestamp (YYYY-MM-DD) from when the archive event happened
+        example: 2020-05-14
+      actor:
+        $ref: "./Navigator.yaml"
+      reason:
+        type: string
+        enum: [karuna_action, navigator_action, import_action]
+        description: Source of action
+        example: navigator_action
+      action:
+        type: string
+        enum: [archive, unarchive]
+        description: Specifies the type of archive event.
+        example: archive
+  latest_associated_interaction:
+    type: number
+    description: ID of latest interaction belonging to the patient
+    example: 92379
+  latest_associated_unread_interaction:
+    type: number
+    description:
+      ID of latest interaction belonging to the patient that has not been read
+    example: 92372
+  latest_associated_unread_incoming_text_interaction:
+    type: number
+    description:
+      ID of latest interaction (specifically incoming text) belonging to the
+      patient that has not been read
+    example: 92371
+  channels:
+    type: array
+    description: IDs of patient's channels
+    items:
+      type: number
+      description: ID of channel
+  circle_of_care_members:
+    type: array
+    description: IDs of patient's Circle of Care Members
+    items:
+      type: number
+      description: ID of Circle of Care Member
+  notes:
+    type: array
+    description: Additional patient notes
+    items:
+      type: object
+      description: Patient Note
+      properties:
+        id:
+          type: number
+          description: Note ID
+          example: 9234
+        body:
+          type: string
+          description: Body of the note
+          example: This patient visited ER twice last month
+        title:
+          type: string
+          description: Title of the note
+          example: Sensitive Patient
+        source:
+          type: string
+          enum: [manual, redox]
+          description:
+            "Source of the note. `manual`: manually created notes; `redox`:
+            created through data import from redox"
+          example: manual
+  internal_testing:
+    type: boolean
+    description:
+      Flat specifying whether the patient was created for internal testing
+      purposes
+    example: false
+  call_forwarding_override:
+    type: object
+    description: Information about who to forward calls
+    properties:
+      navigator:
+        type: number
+        description: ID of navigator to redirect calls to
+        example: 12843
+      expires_on:
+        type: string
+        description:
+          Timestamp (YYYY-MM-DD) indicating when the call forwarding override
+          will end
+        example: 2020-11-23
+  care_team_read_markers:
+    type: array
+    description:
+      Information about what interactions have been read by what navigators
+    items:
+      $ref: "./ConversationReadMarker.yaml"
+  current_navigator_read_marker:
+    $ref: "./ConversationReadMarker.yaml"

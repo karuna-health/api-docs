@@ -89,10 +89,14 @@ tags:
     description: These endpoints allow you to obtain a `user_token` and check its validity.
   - name: Organizations
     description: Endpoints to manage organizations.
+  - name: Patients
+    description: Endpoints to manage patients.
   - name: Navigators
     description: Endpoints to manage navigators.
   - name: Channels
     description: Endpoints to manage channels.
+  - name: Interactions
+    description: Endpoints to manage interactions.
 paths:
   /tokens/check:
     get:
@@ -131,275 +135,6 @@ paths:
                     example: karuna
         '401':
           $ref: '#/components/responses/NotAuthorized'
-  /navigators:
-    get:
-      tags:
-        - Navigators
-      operationId: getNavigators
-      summary: List Navigators
-      description: Get paginated list of navigators.
-      security:
-        - service_token: []
-          user_token: []
-      parameters:
-        - $ref: '#/components/parameters/PaginationNext'
-        - $ref: '#/components/parameters/NavigatorsQuerySearch'
-        - $ref: '#/components/parameters/NavigatorsQuerySortKey'
-        - $ref: '#/components/parameters/QuerySortOrder'
-      responses:
-        '200':
-          description: Organization navigators
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  pagination:
-                    $ref: '#/components/schemas/PaginatedResults'
-                  navigators:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Navigator'
-                  meta:
-                    type: object
-                    properties:
-                      data_key:
-                        type: string
-                        enum:
-                          - navigators
-                        example: navigators
-        '401':
-          $ref: '#/components/responses/NotAuthorized'
-  '/navigators/{navigatorId}':
-    get:
-      tags:
-        - Navigators
-      operationId: getNavigator
-      summary: Get Navigator
-      description: Get all navigator details
-      security:
-        - service_token: []
-          user_token: []
-      parameters:
-        - $ref: '#/components/parameters/NavigatorId'
-      responses:
-        '200':
-          description: Navigator details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NavigatorDetailed'
-        '401':
-          $ref: '#/components/responses/NotAuthorized'
-        '404':
-          $ref: '#/components/responses/ResourceNotFound'
-    patch:
-      tags:
-        - Navigators
-      operationId: patchNavigator
-      summary: Patch Navigator
-      description: Update navigator details
-      security:
-        - service_token: []
-          user_token: []
-      parameters:
-        - in: path
-          name: navigatorId
-          description: Navigator ID
-          schema:
-            type: number
-          required: true
-          example: 1241
-      requestBody:
-        description: Navigator details to be updated
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                navigator:
-                  $ref: '#/components/schemas/Navigator'
-      responses:
-        '200':
-          description: Navigator details
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  navigator:
-                    $ref: '#/components/schemas/NavigatorDetailed'
-        '401':
-          $ref: '#/components/responses/NotAuthorized'
-        '404':
-          $ref: '#/components/responses/ResourceNotFound'
-  '/navigators/{navigatorId}/channels':
-    post:
-      tags:
-        - Channels
-      operationId: postNavigatorChannel
-      summary: Post Navigator Channel
-      description: Update navigator details
-      security:
-        - service_token: []
-          user_token: []
-      parameters:
-        - $ref: '#/components/parameters/NavigatorId'
-      requestBody:
-        description: Details of channel to be created
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                channel:
-                  $ref: '#/components/schemas/Channel'
-      responses:
-        '201':
-          description: Navigator channel created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Channel'
-        '401':
-          $ref: '#/components/responses/NotAuthorized'
-  '/navigators/{navigatorId}/channels/{channelId}':
-    patch:
-      tags:
-        - Channels
-        - Navigators
-      operationId: patchNavigatorChannel
-      summary: Patch Navigator Channel
-      description: Update Navigator Channel Details
-      security:
-        - service_token: []
-          user_token: []
-      parameters:
-        - $ref: '#/components/parameters/NavigatorId'
-        - $ref: '#/components/parameters/ChannelId'
-      responses:
-        '200':
-          description: Navigator channel updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Channel'
-        '401':
-          $ref: '#/components/responses/NotAuthorized'
-        '404':
-          $ref: '#/components/responses/ResourceNotFound'
-    delete:
-      tags:
-        - Channels
-        - Navigators
-      operationId: deleteNavigatorChannel
-      summary: Delete Navigator Channel
-      description: Delete Navigator Channel
-      security:
-        - service_token: []
-          user_token: []
-      parameters:
-        - $ref: '#/components/parameters/NavigatorId'
-        - $ref: '#/components/parameters/ChannelId'
-      requestBody:
-        description: Channel details to be updated
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                channel:
-                  $ref: '#/components/schemas/Channel'
-      responses:
-        '200':
-          description: Navigator channel deleted
-        '401':
-          $ref: '#/components/responses/NotAuthorized'
-        '404':
-          $ref: '#/components/responses/ResourceNotFound'
-  /navigators/token:
-    post:
-      tags:
-        - User Tokens
-      operationId: getNavigatorToken
-      summary: Get Navigator Token
-      description: >-
-        Trade Navigator's credentials for a short-lived `user_token`.
-
-
-        Send this user_token as the X-User-Token header in future requests to
-        authenticate. This token is valid for 30 minutes, and is extended for
-        another 30 minutes with every use.
-      security:
-        - service_token: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                navigator:
-                  type: object
-                  properties:
-                    handle:
-                      description: Unique navigator handle
-                      type: string
-                      example: gcasas
-                    password:
-                      description: >-
-                        Password for the navigator handle belonging to the
-                        specified organization
-                      type: string
-                      example: abc123password
-                organization:
-                  type: object
-                  properties:
-                    slug:
-                      type: string
-                      example: karuna
-                      description: Organization slug
-      responses:
-        '200':
-          description: Valid navigator credentials
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  ip:
-                    type: object
-                    properties:
-                      raw:
-                        type: string
-                        description: Raw ip address
-                        example: 1.1.1.1
-                      masked:
-                        type: string
-                        description: Masked ip address
-                        example: 1.1.1.1
-                  message:
-                    type: string
-                    description: Response message
-                    example: login_successful
-                  token:
-                    type: string
-                    description: Authenticated Navigator's `user_token`
-                    example: ff710fbb-9fb2-43ef-9a26-70e026572362
-        '401':
-          description: Invalid navigator credentials
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    description: Type of error
-                    type: string
-                    example: invalid_handle_or_password
   '/organizations/{slug}':
     get:
       tags:
@@ -569,6 +304,508 @@ paths:
                     description: Whether the request is retryable
                     type: boolean
                     example: false
+  /patients:
+    post:
+      tags:
+        - Patients
+      operationId: postPatient
+      summary: Create New Patient
+      security:
+        - service_token: []
+          user_token: []
+      requestBody:
+        description: Details of patient to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+      responses:
+        '201':
+          description: Patient successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  '/patients/{patientId}/channels':
+    post:
+      tags:
+        - Patients
+        - Channels
+      operationId: postPatientChannel
+      summary: Create Patient Channel
+      description: Create new channel for a patient
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      requestBody:
+        description: Details of channel to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel:
+                  $ref: '#/components/schemas/Channel'
+      responses:
+        '201':
+          description: Patient channel created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/channels/{channelId}':
+    patch:
+      tags:
+        - Channels
+        - Patients
+      operationId: patchPatientChannel
+      summary: Patch Patient Channel
+      description: Update Patient Channel Details
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/ChannelId'
+      requestBody:
+        description: Channel details to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel:
+                  $ref: '#/components/schemas/Channel'
+      responses:
+        '200':
+          description: Patient channel updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+    delete:
+      tags:
+        - Channels
+        - Patients
+      operationId: deletePatientChannel
+      summary: Delete Patient Channel
+      description: Delete Patient Channel
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/ChannelId'
+      responses:
+        '200':
+          description: Patient channel deleted
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/interactions':
+    get:
+      tags:
+        - Patients
+        - Interactions
+      operationId: getPatientInteractions
+      summary: List Patient Interactions
+      description: Get paginated list of patient interactions.
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/PaginationNext'
+      responses:
+        '200':
+          description: Patient Interactions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pagination:
+                    $ref: '#/components/schemas/PaginatedResults'
+                  interactions:
+                    type: array
+                    description: List of patient interactions
+                    items:
+                      $ref: '#/components/schemas/Interaction'
+  /navigators/token:
+    post:
+      tags:
+        - User Tokens
+      operationId: getNavigatorToken
+      summary: Get Navigator Token
+      description: >-
+        Trade Navigator's credentials for a short-lived `user_token`.
+
+
+        Send this user_token as the X-User-Token header in future requests to
+        authenticate. This token is valid for 30 minutes, and is extended for
+        another 30 minutes with every use.
+      security:
+        - service_token: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                navigator:
+                  type: object
+                  properties:
+                    handle:
+                      description: Unique navigator handle
+                      type: string
+                      example: gcasas
+                    password:
+                      description: >-
+                        Password for the navigator handle belonging to the
+                        specified organization
+                      type: string
+                      example: abc123password
+                organization:
+                  type: object
+                  properties:
+                    slug:
+                      type: string
+                      example: karuna
+                      description: Organization slug
+      responses:
+        '200':
+          description: Valid navigator credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ip:
+                    type: object
+                    properties:
+                      raw:
+                        type: string
+                        description: Raw ip address
+                        example: 1.1.1.1
+                      masked:
+                        type: string
+                        description: Masked ip address
+                        example: 1.1.1.1
+                  message:
+                    type: string
+                    description: Response message
+                    example: login_successful
+                  token:
+                    type: string
+                    description: Authenticated Navigator's `user_token`
+                    example: ff710fbb-9fb2-43ef-9a26-70e026572362
+        '401':
+          description: Invalid navigator credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    description: Type of error
+                    type: string
+                    example: invalid_handle_or_password
+  /navigators/delete:
+    delete:
+      tags:
+        - Navigators
+      operationId: invalidateNavigatorToken
+      summary: Invalidate navigator's user_token
+      description: Invalidate navigator's `user_token`
+      security:
+        - service_token: []
+          user_token: []
+      responses:
+        '200':
+          description: Navigator's `user_token` successfully invalidated
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /navigators/reset_password:
+    post:
+      tags:
+        - Navigators
+      operationId: resetNavigatorPassword
+      summary: Reset Navigator Password
+      description: >-
+        Hitting this endpoint causes the server to send an email to the
+        navigator with steps on how to reset their password.
+      security:
+        - service_token: []
+      requestBody:
+        description: Navigator handle and organization slug
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                navigator:
+                  type: object
+                  properties:
+                    handle:
+                      type: string
+                      description: Navigator handle
+                      example: gcasas
+                organization:
+                  type: object
+                  properties:
+                    slug:
+                      type: string
+                      description: Organization slug
+                      example: karuna
+      responses:
+        '200':
+          description: Reset password process triggered
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /navigators/update_password:
+    post:
+      tags:
+        - Navigators
+      operationId: updateNavigatorPassword
+      summary: Update Navigator Password
+      description: >-
+        Update navigator's password with the `reset_token` that's sent to the
+        user via email.
+      security:
+        - service_token: []
+      requestBody:
+        description: New password and `reset_token`
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                navigator:
+                  type: object
+                  properties:
+                    password:
+                      type: string
+                      description: New password
+                      example: password123
+                    reset_token:
+                      type: string
+                      description: Token sent to the user via email
+                      example: asdfasdfa-asdfasq23345-asdfasdf
+      responses:
+        '200':
+          description: Password successfully updated
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /navigators:
+    get:
+      tags:
+        - Navigators
+      operationId: getNavigators
+      summary: List Navigators
+      description: Get paginated list of navigators.
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PaginationNext'
+        - $ref: '#/components/parameters/NavigatorsQuerySearch'
+        - $ref: '#/components/parameters/NavigatorsQuerySortKey'
+        - $ref: '#/components/parameters/QuerySortOrder'
+      responses:
+        '200':
+          description: Organization navigators
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pagination:
+                    $ref: '#/components/schemas/PaginatedResults'
+                  navigators:
+                    type: array
+                    description: List of navigators
+                    items:
+                      $ref: '#/components/schemas/Navigator'
+                  meta:
+                    type: object
+                    properties:
+                      data_key:
+                        type: string
+                        enum:
+                          - navigators
+                        example: navigators
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  '/navigators/{navigatorId}':
+    get:
+      tags:
+        - Navigators
+      operationId: getNavigator
+      summary: Get Navigator
+      description: Get all navigator details
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/NavigatorId'
+      responses:
+        '200':
+          description: Navigator details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NavigatorDetailed'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+    patch:
+      tags:
+        - Navigators
+      operationId: patchNavigator
+      summary: Patch Navigator
+      description: Update navigator details
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - in: path
+          name: navigatorId
+          description: Navigator ID
+          schema:
+            type: number
+          required: true
+          example: 1241
+      requestBody:
+        description: Navigator details to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                navigator:
+                  $ref: '#/components/schemas/Navigator'
+      responses:
+        '200':
+          description: Navigator details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  navigator:
+                    $ref: '#/components/schemas/NavigatorDetailed'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/navigators/{navigatorId}/channels':
+    post:
+      tags:
+        - Navigators
+        - Channels
+      operationId: postNavigatorChannel
+      summary: Create Navigator Channel
+      description: Create new channel for a navigator
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/NavigatorId'
+      requestBody:
+        description: Details of channel to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel:
+                  $ref: '#/components/schemas/Channel'
+      responses:
+        '201':
+          description: Navigator channel created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  '/navigators/{navigatorId}/channels/{channelId}':
+    patch:
+      tags:
+        - Channels
+        - Navigators
+      operationId: patchNavigatorChannel
+      summary: Patch Navigator Channel
+      description: Update Navigator Channel Details
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/NavigatorId'
+        - $ref: '#/components/parameters/ChannelId'
+      requestBody:
+        description: Channel details to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel:
+                  $ref: '#/components/schemas/Channel'
+      responses:
+        '200':
+          description: Navigator channel updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+    delete:
+      tags:
+        - Channels
+        - Navigators
+      operationId: deleteNavigatorChannel
+      summary: Delete Navigator Channel
+      description: Delete Navigator Channel
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/NavigatorId'
+        - $ref: '#/components/parameters/ChannelId'
+      responses:
+        '200':
+          description: Navigator channel deleted
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
 components:
   securitySchemes:
     user_token:
@@ -633,64 +870,300 @@ components:
                 description: Whether the request is retryable
                 type: boolean
                 example: false
-  parameters:
-    PaginationNext:
-      in: query
-      name: next
-      description: >-
-        Pointer to next results page. If not specified, the first results page
-        is returned.
-      schema:
-        type: string
-        example: 43bfa6a3010000001902
-      required: false
-    NavigatorsQuerySearch:
-      in: query
-      name: search
-      description: Navigator names will be queried for an exact match to this string.
-      schema:
-        type: string
-        example: gual
-      required: false
-    NavigatorsQuerySortKey:
-      in: query
-      name: 'sort[key]'
-      description: Key by which results will be sorted.
-      schema:
-        type: string
-        enum:
-          - name
-          - created_at
-        example: name
-      required: false
-    QuerySortOrder:
-      in: query
-      name: 'sort[order]'
-      description: Order in which results will be sorted.
-      schema:
-        type: string
-        enum:
-          - asc
-          - desc
-        example: asc
-      required: false
-    NavigatorId:
-      in: path
-      name: navigatorId
-      description: Navigator ID
-      schema:
-        type: number
-      required: true
-      example: 1241
-    ChannelId:
-      in: path
-      name: channelId
-      description: Channel ID
-      schema:
-        type: number
-      required: true
-      example: 173
   schemas:
+    Patient:
+      type: object
+      description: Patient Data
+      properties:
+        first_name:
+          type: string
+          description: Patient's first name
+          example: Gual
+        middle_name:
+          type: string
+          description: Patient's middle name
+          example: Antonio
+        last_name:
+          type: string
+          description: Patient's last name
+          example: Casas
+        gender:
+          type: string
+          enum:
+            - unknown
+            - male
+            - female
+            - other
+          description: Patient's gender
+          example: male
+        country:
+          type: string
+          description: Patient's country
+          example: Mexico
+        state:
+          type: string
+          description: Patient's state
+          example: Coahuila
+        city:
+          type: string
+          description: Patient's city
+          example: Torreón
+        postal:
+          type: string
+          description: Patient's postal code
+          example: 27100
+        street_address:
+          type: string
+          description: Patient's street address
+          example: 8th Street
+        timezone:
+          type: string
+          description: Patient's timezone
+          example: Mexico_City
+        dob:
+          type: string
+          description: Patient's birthdate (YYYY-MM-DD)
+          example: 1991-10-02T00:00:00.000Z
+        photo:
+          type: string
+          description: Url to patient's photo
+          example: 'https://i.pravatar.cc/300'
+        extra:
+          type: object
+          description: Extra properties to store
+        mrn:
+          type: string
+          description: Patient's Medical Record Number
+          example: 12342
+        care_team_members:
+          type: array
+          description: IDs of patient's Care Team Members
+          items:
+            type: number
+            description: ID of Care Team Member
+        primary_language:
+          type: string
+          description: Patient's primary language
+          example: spa
+        source:
+          type: string
+          description: Source from which the patient was created
+          example: file_upload
+        default_medium:
+          type: string
+          description: Dunno
+          example: Dunno
+        restricted:
+          type: boolean
+          description: >-
+            Flag specifying whether access to this patient should be restricted
+            if permissioning is enabled for the patient's organization
+          example: true
+        archive_event:
+          type: object
+          description: Information about archive/unarchive events
+          properties:
+            event_at:
+              type: string
+              description: Timestamp (YYYY-MM-DD) from when the archive event happened
+              example: 2020-05-14T00:00:00.000Z
+            actor:
+              $ref: ./Navigator.yaml
+            reason:
+              type: string
+              enum:
+                - karuna_action
+                - navigator_action
+                - import_action
+              description: Source of action
+              example: navigator_action
+            action:
+              type: string
+              enum:
+                - archive
+                - unarchive
+              description: Specifies the type of archive event.
+              example: archive
+        latest_associated_interaction:
+          type: number
+          description: ID of latest interaction belonging to the patient
+          example: 92379
+        latest_associated_unread_interaction:
+          type: number
+          description: >-
+            ID of latest interaction belonging to the patient that has not been
+            read
+          example: 92372
+        latest_associated_unread_incoming_text_interaction:
+          type: number
+          description: >-
+            ID of latest interaction (specifically incoming text) belonging to
+            the patient that has not been read
+          example: 92371
+        channels:
+          type: array
+          description: IDs of patient's channels
+          items:
+            type: number
+            description: ID of channel
+        circle_of_care_members:
+          type: array
+          description: IDs of patient's Circle of Care Members
+          items:
+            type: number
+            description: ID of Circle of Care Member
+        notes:
+          type: array
+          description: Additional patient notes
+          items:
+            type: object
+            description: Patient Note
+            properties:
+              id:
+                type: number
+                description: Note ID
+                example: 9234
+              body:
+                type: string
+                description: Body of the note
+                example: This patient visited ER twice last month
+              title:
+                type: string
+                description: Title of the note
+                example: Sensitive Patient
+              source:
+                type: string
+                enum:
+                  - manual
+                  - redox
+                description: >-
+                  Source of the note. `manual`: manually created notes; `redox`:
+                  created through data import from redox
+                example: manual
+        internal_testing:
+          type: boolean
+          description: >-
+            Flat specifying whether the patient was created for internal testing
+            purposes
+          example: false
+        call_forwarding_override:
+          type: object
+          description: Information about who to forward calls
+          properties:
+            navigator:
+              type: number
+              description: ID of navigator to redirect calls to
+              example: 12843
+            expires_on:
+              type: string
+              description: >-
+                Timestamp (YYYY-MM-DD) indicating when the call forwarding
+                override will end
+              example: 2020-11-23T00:00:00.000Z
+        care_team_read_markers:
+          type: array
+          description: >-
+            Information about what interactions have been read by what
+            navigators
+          items:
+            $ref: ./ConversationReadMarker.yaml
+        current_navigator_read_marker:
+          $ref: ./ConversationReadMarker.yaml
+        id:
+          type: string
+          description: Patient ID
+          example: 1342
+        clinical_id:
+          type: string
+          description: Patient's clinical ID
+          example: 1234jkasa-asdfasdf13
+        default_channel_id:
+          type: number
+          description: >-
+            ID of the channel to select as default and be used for automated
+            communications
+          example: 1847
+        primary_navigator_id:
+          type: number
+          description: ID of navigator that's been marked as primary for the patient
+          example: 9273
+        assigned_label_ids:
+          type: array
+          description: IDs of labels that the patient currently has assigned to them
+          items:
+            type: number
+            description: ID of label
+            example: 238
+    Channel:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Channel's ID
+          example: 12345
+        source:
+          type: string
+          enum:
+            - email
+            - landline
+            - sms
+            - push
+          description: Type of channel
+          example: sms
+        identifier:
+          type: string
+          description: Channel's identifier
+          example: '+12345678987'
+        verified:
+          type: boolean
+          description: Dunno
+          example: false
+        label:
+          type: string
+          description: Channel's label
+          example: Personal cell
+        note:
+          type: string
+          description: Note related to the channel
+          example: 'Do not call after 13:00'
+        meta:
+          type: object
+          properties:
+            lookup_failed:
+              type: boolean
+              description: >-
+                Flag specifying whether the number lookup failed if the channel
+                is a phone number.
+              example: false
+            carrier:
+              type: object
+              description: Carrier metadata
+              properties:
+                name:
+                  type: string
+                  description: Carrier name
+                  example: Verizon Wireless
+                type:
+                  type: string
+                  example: 1
+        uuid:
+          type: string
+          description: Dunno
+          example: Dunno
+        organization_id:
+          type: number
+          description: ID of organization to which the channel and channel owner belong
+          example: 4
+        authenticated:
+          type: boolean
+          description: Dunno
+          example: false
+        has_consent:
+          type: boolean
+          description: >-
+            Flag specifying whether the owner has granted consent for
+            communication over the channel
+          example: true
     PaginatedResults:
       type: object
       description: Pagination data
@@ -794,6 +1267,187 @@ components:
             Flag specifying whether the owner has granted consent for
             communication over the channel
           example: true
+    Call:
+      type: object
+      description: Call details
+      properties:
+        id:
+          type: number
+          description: Call ID
+          example: 12394
+        duration:
+          type: number
+          description: Call duration in seconds
+          example: 25
+        created_at:
+          type: string
+          description: Timestamp
+          example: 2020-11-23T00:00:00.000Z
+        recording_url:
+          type: string
+          description: URL to access the call recording if available
+          example: 'https://callrecording.com'
+        transcript_url:
+          type: string
+          description: URL to access the call transcript if available
+          example: 'https://calltranscript.com'
+        recording_source:
+          type: string
+          enum:
+            - live
+            - message
+          description: >-
+            live: call was answered by a patient; message: call went to
+            voicemail
+          example: live
+        subject:
+          type: string
+          description: Call subject
+          example: Transportation arrangement
+        summary:
+          type: string
+          description: Call summary
+          example: 'A taxi is picking them up at 14:20'
+        recording_purged:
+          type: boolean
+          description: Flag specifying whether the recording for the call has been purged
+          example: false
+    Message:
+      type: object
+      description: Message Data
+      properties:
+        id:
+          type: number
+          description: Message ID
+          example: 89072
+        title:
+          type: string
+          description: Dunno
+          example: Dunno
+        body:
+          type: string
+          description: Message body
+          example: 'Hello Gual, how are you doing today?'
+        created_at:
+          type: string
+          description: Timestamp
+          example: 2020-10-23T00:00:00.000Z
+        channel:
+          $ref: '#/components/schemas/ChannelDetailed'
+        direction:
+          type: string
+          enum:
+            - incoming
+            - outgoing
+          description: >-
+            incoming: message sent by a Patient or Circle of Care Member;
+            outgoing: message sent by a Navigator or system generated
+          example: incoming
+        status:
+          type: string
+          enum:
+            - delivered
+            - inflight
+          description: Message status
+          example: delivered
+        id_from_channel:
+          type: string
+          description: Dunno
+          example: Dunno
+        interaction_id:
+          type: number
+          description: ID of interaction the message belongs to
+          example: 2372
+        call:
+          $ref: '#/components/schemas/Call'
+    Interaction:
+      type: object
+      description: Interaction Data
+      properties:
+        id:
+          type: number
+          description: Interaction ID
+          example: 98345
+        patient:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Patient ID
+              example: 1342
+            clinical_id:
+              type: string
+              description: Patient's clinical ID
+              example: 1234jkasa-asdfasdf13
+            default_channel_id:
+              type: number
+              description: >-
+                ID of the channel to select as default and be used for automated
+                communications
+              example: 1847
+            primary_navigator_id:
+              type: number
+              description: ID of navigator that's been marked as primary for the patient
+              example: 9273
+            assigned_label_ids:
+              type: array
+              description: IDs of labels that the patient currently has assigned to them
+              items:
+                type: number
+                description: ID of label
+                example: 238
+        navigator:
+          type: object
+          properties:
+            id:
+              type: number
+              description: Navigator's ID
+              example: 1234
+            first_name:
+              type: string
+              description: Navigator's first name
+              example: Gual
+            middle_name:
+              type: string
+              description: Navigator's Middle name
+              example: Antonio
+            last_name:
+              type: string
+              description: Navigator's last name
+              example: Casas
+            handle:
+              type: string
+              description: Navigator's handle
+              example: gcasas
+        spec:
+          type: object
+          properties:
+            call:
+              type: boolean
+              description: Flag specifying whether the interaction was a call
+              example: true
+            type:
+              type: string
+              description: >-
+                Specifies if the interaction was a message sent in the
+                conversation or an internal comment
+              enum:
+                - conversation
+                - comment
+              example: conversation
+            source:
+              type: string
+              description: Dunno
+              example: nasdaq
+            incoming_message_id:
+              type: number
+              description: Dunno
+              example: 2345
+        messages:
+          type: array
+          description: List of interaction messages
+          items:
+            $ref: '#/components/schemas/Message'
     Navigator:
       type: object
       description: Navigator Data
@@ -818,63 +1472,6 @@ components:
           type: string
           description: Navigator's handle
           example: gcasas
-        role:
-          type: string
-          description: Navigator's role
-          enum:
-            - normal
-            - admin
-          example: normal
-        patients_assigned:
-          type: number
-          description: Count of patients the navigator has assigned to them
-          example: 27
-        clinician_id:
-          type: string
-          description: Dunno
-          example: Dunno
-        preferred_medium:
-          type: string
-          description: Dunno
-          example: async
-        preferred_channel_id:
-          type: number
-          description: >-
-            ID of channel that's marked as preferred for automated
-            communications
-          example: 3842
-        primary_patients_assigned:
-          type: number
-          description: >-
-            Count of patients for which the navigator is marked as primary
-            navigator
-          example: 12
-        last_login:
-          type: string
-          description: Last login's timestamp
-          example: 2020-12-01T17:05:40.437Z
-        organization_role:
-          type: string
-          description: >-
-            Role that the navigator performs at the organization. Each
-            organization has their own custom roles. If no role is specified,
-            the role "navigator" is assumed.
-          example: screener
-        unread_mention_count:
-          type: number
-          description: Count of unread mentions.
-          example: 7
-        subscribed_to:
-          type: array
-          description: Services to which the navigator is subscribed.
-          items:
-            type: string
-            example: daily_digest
-        channels:
-          type: array
-          description: Navigator's channels
-          items:
-            $ref: '#/components/schemas/ChannelDetailed'
     NavigatorDetailed:
       type: object
       description: Navigator Data including unread counts.
@@ -907,130 +1504,68 @@ components:
           type: string
           description: Navigator's handle
           example: gcasas
-        role:
-          type: string
-          description: Navigator's role
-          enum:
-            - normal
-            - admin
-          example: normal
-        patients_assigned:
-          type: number
-          description: Count of patients the navigator has assigned to them
-          example: 27
-        clinician_id:
-          type: string
-          description: Dunno
-          example: Dunno
-        preferred_medium:
-          type: string
-          description: Dunno
-          example: async
-        preferred_channel_id:
-          type: number
-          description: >-
-            ID of channel that's marked as preferred for automated
-            communications
-          example: 3842
-        primary_patients_assigned:
-          type: number
-          description: >-
-            Count of patients for which the navigator is marked as primary
-            navigator
-          example: 12
-        last_login:
-          type: string
-          description: Last login's timestamp
-          example: 2020-12-01T17:05:40.437Z
-        organization_role:
-          type: string
-          description: >-
-            Role that the navigator performs at the organization. Each
-            organization has their own custom roles. If no role is specified,
-            the role "navigator" is assumed.
-          example: screener
-        unread_mention_count:
-          type: number
-          description: Count of unread mentions.
-          example: 7
-        subscribed_to:
-          type: array
-          description: Services to which the navigator is subscribed.
-          items:
-            type: string
-            example: daily_digest
-        channels:
-          type: array
-          description: Navigator's channels
-          items:
-            $ref: '#/components/schemas/ChannelDetailed'
-    Channel:
-      type: object
-      properties:
-        id:
-          type: number
-          description: Channel's ID
-          example: 12345
-        source:
-          type: string
-          enum:
-            - email
-            - landline
-            - sms
-            - push
-          description: Type of channel
-          example: sms
-        identifier:
-          type: string
-          description: Channel's identifier
-          example: '+12345678987'
-        verified:
-          type: boolean
-          description: Dunno
-          example: false
-        label:
-          type: string
-          description: Channel's label
-          example: Personal cell
-        note:
-          type: string
-          description: Note related to the channel
-          example: 'Do not call after 13:00'
-        meta:
-          type: object
-          properties:
-            lookup_failed:
-              type: boolean
-              description: >-
-                Flag specifying whether the number lookup failed if the channel
-                is a phone number.
-              example: false
-            carrier:
-              type: object
-              description: Carrier metadata
-              properties:
-                name:
-                  type: string
-                  description: Carrier name
-                  example: Verizon Wireless
-                type:
-                  type: string
-                  example: 1
-        uuid:
-          type: string
-          description: Dunno
-          example: Dunno
-        organization_id:
-          type: number
-          description: ID of organization to which the channel and channel owner belong
-          example: 4
-        authenticated:
-          type: boolean
-          description: Dunno
-          example: false
-        has_consent:
-          type: boolean
-          description: >-
-            Flag specifying whether the owner has granted consent for
-            communication over the channel
-          example: true
+  parameters:
+    PatientId:
+      in: path
+      name: patientId
+      description: Patient ID
+      schema:
+        type: number
+      required: true
+      example: 8324
+    ChannelId:
+      in: path
+      name: channelId
+      description: Channel ID
+      schema:
+        type: number
+      required: true
+      example: 173
+    PaginationNext:
+      in: query
+      name: next
+      description: >-
+        Pointer to next results page. If not specified, the first results page
+        is returned.
+      schema:
+        type: string
+        example: 43bfa6a3010000001902
+      required: false
+    NavigatorsQuerySearch:
+      in: query
+      name: search
+      description: Navigator names will be queried for an exact match to this string.
+      schema:
+        type: string
+        example: gual
+      required: false
+    NavigatorsQuerySortKey:
+      in: query
+      name: 'sort[key]'
+      description: Key by which results will be sorted.
+      schema:
+        type: string
+        enum:
+          - name
+          - created_at
+        example: name
+      required: false
+    QuerySortOrder:
+      in: query
+      name: 'sort[order]'
+      description: Order in which results will be sorted.
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        example: asc
+      required: false
+    NavigatorId:
+      in: path
+      name: navigatorId
+      description: Navigator ID
+      schema:
+        type: number
+      required: true
+      example: 1241

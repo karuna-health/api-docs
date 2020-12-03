@@ -1,0 +1,43 @@
+type: object
+description: Message Data
+properties:
+  id:
+    type: number
+    description: Message ID
+    example: 89072
+  title:
+    type: string
+    description: Dunno
+    example: Dunno
+  body:
+    type: string
+    description: Message body
+    example: "Hello Gual, how are you doing today?"
+  created_at:
+    type: string
+    description: Timestamp
+    example: 2020-10-23
+  channel:
+    $ref: "./ChannelDetailed.yaml"
+  direction:
+    type: string
+    enum: [incoming, outgoing]
+    description:
+      "incoming: message sent by a Patient or Circle of Care Member; outgoing:
+      message sent by a Navigator or system generated"
+    example: incoming
+  status:
+    type: string
+    enum: [delivered, inflight]
+    description: Message status
+    example: delivered
+  id_from_channel:
+    type: string
+    description: Dunno
+    example: Dunno
+  interaction_id:
+    type: number
+    description: ID of interaction the message belongs to
+    example: 2372
+  call:
+    $ref: "./Call.yaml"

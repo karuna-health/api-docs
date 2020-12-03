@@ -1,15 +1,15 @@
 patch:
   tags:
     - Channels
-    - Navigators
-  operationId: patchNavigatorChannel
-  summary: Patch Navigator Channel
-  description: Update Navigator Channel Details
+    - Patients
+  operationId: patchPatientChannel
+  summary: Patch Patient Channel
+  description: Update Patient Channel Details
   security:
     - service_token: []
       user_token: []
   parameters:
-    - $ref: "../../../../components/parameters/NavigatorId.yaml"
+    - $ref: "../../../../components/parameters/PatientId.yaml"
     - $ref: "../../../../components/parameters/ChannelId.yaml"
   requestBody:
     description: Channel details to be updated
@@ -23,7 +23,7 @@ patch:
               $ref: "../../../../components/schemas/Channel.yaml"
   responses:
     200:
-      description: Navigator channel updated
+      description: Patient channel updated
       content:
         application/json:
           schema:
@@ -36,19 +36,19 @@ patch:
 delete:
   tags:
     - Channels
-    - Navigators
-  operationId: deleteNavigatorChannel
-  summary: Delete Navigator Channel
-  description: Delete Navigator Channel
+    - Patients
+  operationId: deletePatientChannel
+  summary: Delete Patient Channel
+  description: Delete Patient Channel
   security:
     - service_token: []
       user_token: []
   parameters:
-    - $ref: "../../../../components/parameters/NavigatorId.yaml"
+    - $ref: "../../../../components/parameters/PatientId.yaml"
     - $ref: "../../../../components/parameters/ChannelId.yaml"
   responses:
     200:
-      description: Navigator channel deleted
+      description: Patient channel deleted
     401:
       $ref: "../../../../components/responses/NotAuthorized.yaml"
     404:

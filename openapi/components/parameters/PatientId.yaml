@@ -1,0 +1,7 @@
+in: path
+name: patientId
+description: Patient ID
+schema:
+  type: number
+required: true
+example: 8324

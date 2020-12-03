@@ -1,0 +1,24 @@
+post:
+  tags:
+    - Patients
+  operationId: postPatient
+  summary: Create New Patient
+  security:
+    - service_token: []
+      user_token: []
+  requestBody:
+    description: Details of patient to be created
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../components/schemas/Patient.yaml"
+  responses:
+    201:
+      description: Patient successfully created
+      content:
+        application/json:
+          schema:
+            $ref: "../../components/schemas/Patient.yaml"
+    401:
+      $ref: "../../components/responses/NotAuthorized.yaml"
