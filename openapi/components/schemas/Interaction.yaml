@@ -12,7 +12,12 @@ properties:
   navigator:
     type: object
     properties:
-      $ref: "./sharedProperties/NavigatorSummary.yaml"
+      # TODO(gualcm): fix
+      # $ref: "./sharedProperties/Navigator.yaml"
+      name:
+        type: string
+        description: name
+        example: Name
   spec:
     type: object
     properties:

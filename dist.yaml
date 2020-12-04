@@ -2,9 +2,6 @@ openapi: 3.0.2
 info:
   version: 1.0.0
   title: Karuna API
-  license:
-    name: Apache 2.0
-    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
   contact:
     name: Karuna Health API Support
     email: antares@meetkaruna.com
@@ -673,7 +670,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NavigatorDetailed'
+                $ref: '#/components/schemas/NavigatorWithUnreadCounts'
         '401':
           $ref: '#/components/responses/NotAuthorized'
         '404':
@@ -714,7 +711,7 @@ paths:
                 type: object
                 properties:
                   navigator:
-                    $ref: '#/components/schemas/NavigatorDetailed'
+                    $ref: '#/components/schemas/NavigatorWithUnreadCounts'
         '401':
           $ref: '#/components/responses/NotAuthorized'
         '404':
@@ -968,7 +965,12 @@ components:
               description: Timestamp (YYYY-MM-DD) from when the archive event happened
               example: 2020-05-14T00:00:00.000Z
             actor:
-              $ref: ./Navigator.yaml
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: name
+                  example: Name
             reason:
               type: string
               enum:
@@ -1066,9 +1068,19 @@ components:
             Information about what interactions have been read by what
             navigators
           items:
-            $ref: ./ConversationReadMarker.yaml
+            type: object
+            properties:
+              name:
+                type: name
+                description: Name
+                example: Name
         current_navigator_read_marker:
-          $ref: ./ConversationReadMarker.yaml
+          type: object
+          properties:
+            name:
+              type: name
+              description: Name
+              example: Name
         id:
           type: string
           description: Patient ID
@@ -1399,26 +1411,10 @@ components:
         navigator:
           type: object
           properties:
-            id:
-              type: number
-              description: Navigator's ID
-              example: 1234
-            first_name:
+            name:
               type: string
-              description: Navigator's first name
-              example: Gual
-            middle_name:
-              type: string
-              description: Navigator's Middle name
-              example: Antonio
-            last_name:
-              type: string
-              description: Navigator's last name
-              example: Casas
-            handle:
-              type: string
-              description: Navigator's handle
-              example: gcasas
+              description: name
+              example: Name
         spec:
           type: object
           properties:
@@ -1472,7 +1468,7 @@ components:
           type: string
           description: Navigator's handle
           example: gcasas
-    NavigatorDetailed:
+    NavigatorWithUnreadCounts:
       type: object
       description: Navigator Data including unread counts.
       properties:

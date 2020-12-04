@@ -15,7 +15,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../../../components/schemas/NavigatorDetailed.yaml"
+            $ref: "../../../components/schemas/NavigatorWithUnreadCounts.yaml"
 
     401:
       $ref: "../../../components/responses/NotAuthorized.yaml"
@@ -59,7 +59,7 @@ patch:
             type: object
             properties:
               navigator:
-                $ref: "../../../components/schemas/NavigatorDetailed.yaml"
+                $ref: "../../../components/schemas/NavigatorWithUnreadCounts.yaml"
     401:
       $ref: "../../../components/responses/NotAuthorized.yaml"
     404:

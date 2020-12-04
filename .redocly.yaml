@@ -6,6 +6,7 @@ lint:
     - recommended
   rules:
     no-unused-components: warning
+    info-license: off
 referenceDocs:
   htmlTemplate: ./docs-dev/index.html
   theme:

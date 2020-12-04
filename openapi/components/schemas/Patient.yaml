@@ -91,7 +91,14 @@ properties:
         description: Timestamp (YYYY-MM-DD) from when the archive event happened
         example: 2020-05-14
       actor:
-        $ref: "./Navigator.yaml"
+        # TODO(gualcm): fix
+        # $ref: "./Navigator.yaml"
+        type: object
+        properties:
+          name:
+            type: string
+            description: name
+            example: Name
       reason:
         type: string
         enum: [karuna_action, navigator_action, import_action]
@@ -180,6 +187,20 @@ properties:
     description:
       Information about what interactions have been read by what navigators
     items:
-      $ref: "./ConversationReadMarker.yaml"
+      # TODO(gualcm): fix
+      # $ref: "./ConversationReadMarker.yaml"
+      type: object
+      properties:
+        name:
+          type: name
+          description: Name
+          example: Name
   current_navigator_read_marker:
-    $ref: "./ConversationReadMarker.yaml"
+    # TODO(gualcm): fix
+    # $ref: "./ConversationReadMarker.yaml"
+    type: object
+    properties:
+      name:
+        type: name
+        description: Name
+        example: Name
