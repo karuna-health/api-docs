@@ -49,6 +49,8 @@ allOf:
           type: string
           example: "daily_digest"
       channels:
+        # TODO(gualcm): maybe use schemas.channels if we make
+        # owner data consistent
         type: array
         description: Navigator's channels
         items:

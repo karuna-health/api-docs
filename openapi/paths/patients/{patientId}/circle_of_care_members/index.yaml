@@ -1,0 +1,30 @@
+post:
+  tags:
+    - Patients
+    - Circle of Care Members
+  operationId: createCcm
+  summary: Create Circle of Care Member
+  description: Create new Circle of Care Member for a patient
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../components/parameters/PatientId.yaml"
+  requestBody:
+    description: Details of Circle of Care Member to be created
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../../components/schemas/CircleOfCareMember.yaml"
+  responses:
+    200:
+      description: Circle of Care Members successfully created
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../components/schemas/CircleOfCareMember.yaml"
+    401:
+      $ref: "../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../components/responses/ResourceNotFound.yaml"

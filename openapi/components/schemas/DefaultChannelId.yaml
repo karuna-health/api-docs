@@ -1,0 +1,5 @@
+type: number
+description:
+  ID of the channel to select as default and be used for automated
+  communications
+example: 1847

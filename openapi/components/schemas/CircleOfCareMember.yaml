@@ -1,0 +1,35 @@
+type: object
+description: Circle of Care Member data
+properties:
+  id:
+    type: number
+    description: Circle of Care Member ID
+    example: 91723
+  first_name:
+    type: string
+    description: Circle of Care Member first name
+    example: Sam
+  middle_name:
+    type: string
+    description: Circle of Care Member middle name
+    example: James
+  last_name:
+    type: string
+    description: Circle of Care Member last name
+    example: Mauldin
+  gender:
+    $ref: "./Gender.yaml"
+  relationship_type:
+    $ref: "./RelationshipType.yaml"
+  channels:
+    $ref: "./Channels.yaml"
+  default_channel_id:
+    $ref: "./DefaultChannelId.yaml"
+  primary_language:
+    type: string
+    description: Primary language
+    example: spa
+  care_team_read_markers:
+    $ref: "./ConversationReadMarkers.yaml"
+  current_navigator_read_marker:
+    $ref: "./CurrentNavigatorConversationReadMarker.yaml"

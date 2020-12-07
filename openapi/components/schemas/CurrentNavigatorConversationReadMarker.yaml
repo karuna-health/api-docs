@@ -1,0 +1,4 @@
+allOf:
+  - type: object
+    description: Conversation read-marker for the currently logged in navigator
+  - $ref: "./ConversationReadMarker.yaml"

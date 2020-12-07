@@ -111,3 +111,4 @@
 
     3rd party identifier from downstream providers
 - [ ] what is patient.current_navigator? I think it's not included everywhere
+- [ ] Not sure how to document CareTeamMembers

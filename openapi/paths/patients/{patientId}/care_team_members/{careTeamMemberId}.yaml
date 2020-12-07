@@ -1,0 +1,20 @@
+delete:
+  tags:
+    - Patients
+    - Navigators
+  operationId: deleteCareTeamMember
+  summary: Delete Care Team Member
+  description: Unassign navigator from a patient
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../components/parameters/PatientId.yaml"
+    - $ref: "../../../../components/parameters/CareTeamMemberId.yaml"
+  responses:
+    200:
+      description: Navigator unassigned
+    404:
+      $ref: "../../../../components/responses/ResourceNotFound.yaml"
+    401:
+      $ref: "../../../../components/responses/NotAuthorized.yaml"

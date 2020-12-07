@@ -1,0 +1,7 @@
+in: path
+name: careTeamMemberId
+description: Care Team Member ID
+schema:
+  type: number
+required: true
+example: 1289

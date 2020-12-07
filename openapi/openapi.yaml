@@ -95,6 +95,9 @@ tags:
   - name: Patients
     description: Endpoints to manage patients.
 
+  - name: Circle of Care Members
+    description: Endpoints to manage circle of care members.
+
   - name: Navigators
     description: Endpoints to manage navigators.
 
@@ -125,6 +128,10 @@ paths:
     $ref: "paths/patients/{patientId}/channels/{channelId}.yaml"
   /patients/{patientId}/interactions:
     $ref: "paths/patients/{patientId}/interactions/index.yaml"
+  /patients/{patientId}/care_team_members/{careTeamMemberId}:
+    $ref: "paths/patients/{patientId}/care_team_members/{careTeamMemberId}.yaml"
+  /patients/{patientId}/circle_of_care_members:
+    $ref: "paths/patients/{patientId}/circle_of_care_members/index.yaml"
 
   /navigators/token:
     $ref: "paths/navigators/token.yaml"

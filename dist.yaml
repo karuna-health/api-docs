@@ -88,6 +88,8 @@ tags:
     description: Endpoints to manage organizations.
   - name: Patients
     description: Endpoints to manage patients.
+  - name: Circle of Care Members
+    description: Endpoints to manage circle of care members.
   - name: Navigators
     description: Endpoints to manage navigators.
   - name: Channels
@@ -532,6 +534,58 @@ paths:
                       $ref: '#/components/schemas/Interaction'
         '401':
           $ref: '#/components/responses/NotAuthorized'
+  '/patients/{patientId}/care_team_members/{careTeamMemberId}':
+    delete:
+      tags:
+        - Patients
+        - Navigators
+      operationId: deleteCareTeamMember
+      summary: Delete Care Team Member
+      description: Unassign navigator from a patient
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/CareTeamMemberId'
+      responses:
+        '200':
+          description: Navigator unassigned
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/circle_of_care_members':
+    post:
+      tags:
+        - Patients
+        - Circle of Care Members
+      operationId: createCcm
+      summary: Create Circle of Care Member
+      description: Create new Circle of Care Member for a patient
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      requestBody:
+        description: Details of Circle of Care Member to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CircleOfCareMember'
+      responses:
+        '200':
+          description: Circle of Care Members successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CircleOfCareMember'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
   /navigators/token:
     post:
       tags:
@@ -964,6 +1018,21 @@ components:
                 type: boolean
                 example: false
   schemas:
+    DefaultChannelId:
+      type: number
+      description: >-
+        ID of the channel to select as default and be used for automated
+        communications
+      example: 1847
+    Gender:
+      type: string
+      enum:
+        - unknown
+        - male
+        - female
+        - other
+      description: Patient's gender
+      example: male
     NavigatorBasicDetails:
       type: object
       description: Navigator Basic Details
@@ -1059,6 +1128,98 @@ components:
             Flag specifying whether the owner has granted consent for
             communication over the channel
           example: true
+    Channels:
+      type: array
+      description: Communication channels
+      items:
+        $ref: '#/components/schemas/Channel'
+    RelationshipType:
+      type: string
+      enum:
+        - mother
+        - father
+        - son
+        - daughter
+        - grandfather
+        - grandmother
+        - grandson
+        - granddaughter
+        - husband
+        - wife
+        - uncle
+        - aunt
+        - brother
+        - sister
+        - friend
+        - guardian
+        - caregiver
+        - other
+        - niece
+        - nephew
+      description: Circle of Care Member's relationship type
+      example: mother
+    ConversationReadMarker:
+      type: object
+      description: Navigator ID with the last interaction ID the navigators has read
+      properties:
+        navigator_id:
+          type: number
+          description: ID of navigator
+          example: 39478
+        last_read:
+          type: number
+          description: ID of last read interaction
+          example: 89712
+        read_at:
+          type: string
+          description: Timestamp of when the interaction was read
+          example: '2020-07-03T17:10:57.567Z'
+    ConversationReadMarkers:
+      type: array
+      description: Information about what interactions have been read by what navigators
+      items:
+        $ref: '#/components/schemas/ConversationReadMarker'
+    CurrentNavigatorConversationReadMarker:
+      allOf:
+        - type: object
+          description: Conversation read-marker for the currently logged in navigator
+        - $ref: '#/components/schemas/ConversationReadMarker'
+    CircleOfCareMember:
+      type: object
+      description: Circle of Care Member data
+      properties:
+        id:
+          type: number
+          description: Circle of Care Member ID
+          example: 91723
+        first_name:
+          type: string
+          description: Circle of Care Member first name
+          example: Sam
+        middle_name:
+          type: string
+          description: Circle of Care Member middle name
+          example: James
+        last_name:
+          type: string
+          description: Circle of Care Member last name
+          example: Mauldin
+        gender:
+          $ref: '#/components/schemas/Gender'
+        relationship_type:
+          $ref: '#/components/schemas/RelationshipType'
+        channels:
+          $ref: '#/components/schemas/Channels'
+        default_channel_id:
+          $ref: '#/components/schemas/DefaultChannelId'
+        primary_language:
+          type: string
+          description: Primary language
+          example: spa
+        care_team_read_markers:
+          $ref: '#/components/schemas/ConversationReadMarkers'
+        current_navigator_read_marker:
+          $ref: '#/components/schemas/CurrentNavigatorConversationReadMarker'
     ChannelOwnerDetails:
       type: object
       description: Channel owner details
@@ -1136,25 +1297,9 @@ components:
                 allOf:
                   - $ref: '#/components/schemas/Channel'
                   - $ref: '#/components/schemas/ChannelOwnerDetails'
-    ConversationReadMarker:
-      type: object
-      description: Navigator ID with the last interaction ID the navigators has read
-      properties:
-        navigator_id:
-          type: number
-          description: ID of navigator
-          example: 39478
-        last_read:
-          type: number
-          description: ID of last read interaction
-          example: 89712
-        read_at:
-          type: string
-          description: Timestamp of when the interaction was read
-          example: '2020-07-03T17:10:57.567Z'
     Patient:
       type: object
-      description: Patient Data
+      description: Patient data
       properties:
         id:
           type: string
@@ -1165,11 +1310,7 @@ components:
           description: Patient's clinical ID
           example: 1234jkasa-asdfasdf13
         default_channel_id:
-          type: number
-          description: >-
-            ID of the channel to select as default and be used for automated
-            communications
-          example: 1847
+          $ref: '#/components/schemas/DefaultChannelId'
         primary_navigator_id:
           type: number
           description: ID of navigator that's been marked as primary for the patient
@@ -1194,14 +1335,7 @@ components:
           description: Patient's last name
           example: Casas
         gender:
-          type: string
-          enum:
-            - unknown
-            - male
-            - female
-            - other
-          description: Patient's gender
-          example: male
+          $ref: '#/components/schemas/Gender'
         country:
           type: string
           description: Patient's country
@@ -1307,17 +1441,12 @@ components:
             the patient that has not been read
           example: 92371
         channels:
-          type: array
-          description: IDs of patient's channels
-          items:
-            type: number
-            description: ID of channel
+          $ref: '#/components/schemas/Channels'
         circle_of_care_members:
           type: array
-          description: IDs of patient's Circle of Care Members
+          description: Circle of Care Members
           items:
-            type: number
-            description: ID of Circle of Care Member
+            $ref: '#/components/schemas/CircleOfCareMember'
         notes:
           type: array
           description: Additional patient notes
@@ -1349,7 +1478,7 @@ components:
         internal_testing:
           type: boolean
           description: >-
-            Flat specifying whether the patient was created for internal testing
+            Flag specifying whether the patient was created for internal testing
             purposes
           example: false
         current_navigator:
@@ -1376,13 +1505,7 @@ components:
           items:
             $ref: '#/components/schemas/ConversationReadMarker'
         current_navigator_read_marker:
-          $ref: '#/components/schemas/ConversationReadMarker'
-          type: object
-          properties:
-            name:
-              type: string
-              description: Name
-              example: Name
+          $ref: '#/components/schemas/CurrentNavigatorConversationReadMarker'
     PaginatedResults:
       type: object
       description: Pagination data
@@ -1608,6 +1731,14 @@ components:
         type: string
         example: 43bfa6a3010000001902
       required: false
+    CareTeamMemberId:
+      in: path
+      name: careTeamMemberId
+      description: Care Team Member ID
+      schema:
+        type: number
+      required: true
+      example: 1289
     NavigatorsQuerySearch:
       in: query
       name: search

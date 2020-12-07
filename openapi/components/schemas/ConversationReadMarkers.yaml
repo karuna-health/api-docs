@@ -1,0 +1,5 @@
+type: array
+description:
+  Information about what interactions have been read by what navigators
+items:
+  $ref: "./ConversationReadMarker.yaml"

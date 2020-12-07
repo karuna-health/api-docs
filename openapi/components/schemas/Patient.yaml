@@ -1,5 +1,5 @@
 type: object
-description: Patient Data
+description: Patient data
 properties:
   id:
     type: string
@@ -10,11 +10,7 @@ properties:
     description: Patient's clinical ID
     example: 1234jkasa-asdfasdf13
   default_channel_id:
-    type: number
-    description:
-      ID of the channel to select as default and be used for automated
-      communications
-    example: 1847
+    $ref: "./DefaultChannelId.yaml"
   primary_navigator_id:
     type: number
     description: ID of navigator that's been marked as primary for the patient
@@ -39,10 +35,7 @@ properties:
     description: Patient's last name
     example: Casas
   gender:
-    type: string
-    enum: [unknown, male, female, other]
-    description: Patient's gender
-    example: male
+    $ref: "./Gender.yaml"
   country:
     type: string
     description: Patient's country
@@ -142,17 +135,12 @@ properties:
       patient that has not been read
     example: 92371
   channels:
-    type: array
-    description: IDs of patient's channels
-    items:
-      type: number
-      description: ID of channel
+    $ref: "./Channels.yaml"
   circle_of_care_members:
     type: array
-    description: IDs of patient's Circle of Care Members
+    description: Circle of Care Members
     items:
-      type: number
-      description: ID of Circle of Care Member
+      $ref: "./CircleOfCareMember.yaml"
   notes:
     type: array
     description: Additional patient notes
@@ -182,7 +170,7 @@ properties:
   internal_testing:
     type: boolean
     description:
-      Flat specifying whether the patient was created for internal testing
+      Flag specifying whether the patient was created for internal testing
       purposes
     example: false
   current_navigator:
@@ -208,10 +196,4 @@ properties:
     items:
       $ref: "./ConversationReadMarker.yaml"
   current_navigator_read_marker:
-    $ref: "./ConversationReadMarker.yaml"
-    type: object
-    properties:
-      name:
-        type: string
-        description: Name
-        example: Name
+    $ref: "./CurrentNavigatorConversationReadMarker.yaml"

@@ -1,0 +1,26 @@
+type: string
+enum:
+  [
+    mother,
+    father,
+    son,
+    daughter,
+    grandfather,
+    grandmother,
+    grandson,
+    granddaughter,
+    husband,
+    wife,
+    uncle,
+    aunt,
+    brother,
+    sister,
+    friend,
+    guardian,
+    caregiver,
+    other,
+    niece,
+    nephew,
+  ]
+description: Circle of Care Member's relationship type
+example: mother
