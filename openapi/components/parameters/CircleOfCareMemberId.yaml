@@ -1,0 +1,7 @@
+in: path
+name: circleOfCareMemberId
+description: Circle of Care Member ID
+schema:
+  type: number
+required: true
+example: 9341

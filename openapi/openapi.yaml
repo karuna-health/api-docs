@@ -132,6 +132,10 @@ paths:
     $ref: "paths/patients/{patientId}/care_team_members/{careTeamMemberId}.yaml"
   /patients/{patientId}/circle_of_care_members:
     $ref: "paths/patients/{patientId}/circle_of_care_members/index.yaml"
+  /patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/interactions:
+    $ref: "paths/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/interactions.yaml"
+  /patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}:
+    $ref: "paths/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/index.yaml"
 
   /navigators/token:
     $ref: "paths/navigators/token.yaml"

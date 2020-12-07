@@ -28,3 +28,5 @@ get:
                   $ref: "../../../../components/schemas/Interaction.yaml"
     401:
       $ref: "../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../components/responses/ResourceNotFound.yaml"

@@ -534,6 +534,8 @@ paths:
                       $ref: '#/components/schemas/Interaction'
         '401':
           $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
   '/patients/{patientId}/care_team_members/{careTeamMemberId}':
     delete:
       tags:
@@ -578,6 +580,79 @@ paths:
       responses:
         '200':
           description: Circle of Care Members successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CircleOfCareMember'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/interactions':
+    get:
+      tags:
+        - Circle of Care Members
+        - Interactions
+      operationId: getCcmInteractions
+      summary: List Circle of Care Member Interactions
+      description: Get paginated list of Circle of Care Member interactions.
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/CircleOfCareMemberId'
+        - $ref: '#/components/parameters/PaginationNext'
+      responses:
+        '200':
+          description: Circle of Care Member Interactions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pagination:
+                    $ref: '#/components/schemas/PaginatedResults'
+                  interactions:
+                    type: array
+                    description: List of Circle of Care Member interactions
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/Interaction'
+                        - type: object
+                          properties:
+                            circle_of_care_member:
+                              $ref: '#/components/schemas/CircleOfCareMember'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}':
+    patch:
+      tags:
+        - Circle of Care Members
+      operationId: updateCircleOfCareMember
+      summary: Update Circle of Care Member
+      description: Update Circle of Care Member Details
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/CircleOfCareMemberId'
+      requestBody:
+        description: Circle of Care Member details to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                circle_of_care_member:
+                  $ref: '#/components/schemas/CircleOfCareMember'
+      responses:
+        '200':
+          description: Circle of Care Member updated
           content:
             application/json:
               schema:
@@ -1181,8 +1256,7 @@ components:
         $ref: '#/components/schemas/ConversationReadMarker'
     CurrentNavigatorConversationReadMarker:
       allOf:
-        - type: object
-          description: Conversation read-marker for the currently logged in navigator
+        - description: Conversation read-marker for the currently logged in navigator
         - $ref: '#/components/schemas/ConversationReadMarker'
     CircleOfCareMember:
       type: object
@@ -1739,6 +1813,14 @@ components:
         type: number
       required: true
       example: 1289
+    CircleOfCareMemberId:
+      in: path
+      name: circleOfCareMemberId
+      description: Circle of Care Member ID
+      schema:
+        type: number
+      required: true
+      example: 9341
     NavigatorsQuerySearch:
       in: query
       name: search

@@ -1,0 +1,38 @@
+get:
+  tags:
+    - Circle of Care Members
+    - Interactions
+  operationId: getCcmInteractions
+  summary: List Circle of Care Member Interactions
+  description: Get paginated list of Circle of Care Member interactions.
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../../components/parameters/PatientId.yaml"
+    - $ref: "../../../../../components/parameters/CircleOfCareMemberId.yaml"
+    - $ref: "../../../../../components/parameters/PaginationNext.yaml"
+  responses:
+    200:
+      description: Circle of Care Member Interactions
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              pagination:
+                $ref: "../../../../../components/schemas/PaginatedResults.yaml"
+              interactions:
+                type: array
+                description: List of Circle of Care Member interactions
+                items:
+                  allOf:
+                    - $ref: "../../../../../components/schemas/Interaction.yaml"
+                    - type: object
+                      properties:
+                        circle_of_care_member:
+                          $ref: "../../../../../components/schemas/CircleOfCareMember.yaml"
+    401:
+      $ref: "../../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../../components/responses/ResourceNotFound.yaml"

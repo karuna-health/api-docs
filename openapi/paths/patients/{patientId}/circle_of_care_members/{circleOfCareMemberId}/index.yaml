@@ -1,0 +1,33 @@
+patch:
+  tags:
+    - Circle of Care Members
+  operationId: updateCircleOfCareMember
+  summary: Update Circle of Care Member
+  description: Update Circle of Care Member Details
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../../components/parameters/PatientId.yaml"
+    - $ref: "../../../../../components/parameters/CircleOfCareMemberId.yaml"
+  requestBody:
+    description: Circle of Care Member details to be updated
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            circle_of_care_member:
+              $ref: "../../../../../components/schemas/CircleOfCareMember.yaml"
+  responses:
+    200:
+      description: Circle of Care Member updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../../components/schemas/CircleOfCareMember.yaml"
+    401:
+      $ref: "../../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../../components/responses/ResourceNotFound.yaml"
