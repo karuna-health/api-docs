@@ -1,7 +1,31 @@
 type: object
 description: Patient Data
 properties:
-  $ref: "./sharedProperties/PatientSummary.yaml"
+  id:
+    type: string
+    description: Patient ID
+    example: 1342
+  clinical_id:
+    type: string
+    description: Patient's clinical ID
+    example: 1234jkasa-asdfasdf13
+  default_channel_id:
+    type: number
+    description:
+      ID of the channel to select as default and be used for automated
+      communications
+    example: 1847
+  primary_navigator_id:
+    type: number
+    description: ID of navigator that's been marked as primary for the patient
+    example: 9273
+  assigned_label_ids:
+    type: array
+    description: IDs of labels that the patient currently has assigned to them
+    items:
+      type: number
+      description: ID of label
+      example: 238
   first_name:
     type: string
     description: Patient's first name
@@ -91,14 +115,7 @@ properties:
         description: Timestamp (YYYY-MM-DD) from when the archive event happened
         example: 2020-05-14
       actor:
-        # TODO(gualcm): fix
-        # $ref: "./Navigator.yaml"
-        type: object
-        properties:
-          name:
-            type: string
-            description: name
-            example: Name
+        $ref: "./Navigator.yaml"
       reason:
         type: string
         enum: [karuna_action, navigator_action, import_action]
@@ -192,7 +209,7 @@ properties:
       type: object
       properties:
         name:
-          type: name
+          type: string
           description: Name
           example: Name
   current_navigator_read_marker:
@@ -201,6 +218,6 @@ properties:
     type: object
     properties:
       name:
-        type: name
+        type: string
         description: Name
         example: Name

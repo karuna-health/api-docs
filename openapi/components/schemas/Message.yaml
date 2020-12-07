@@ -18,7 +18,9 @@ properties:
     description: Timestamp
     example: 2020-10-23
   channel:
-    $ref: "./ChannelDetailed.yaml"
+    allOf:
+      - $ref: "./Channel.yaml"
+      - $ref: "./ChannelOwnerDetails.yaml"
   direction:
     type: string
     enum: [incoming, outgoing]

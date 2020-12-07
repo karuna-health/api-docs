@@ -1,7 +1,6 @@
 type: object
-description: Navigator Data including unread counts.
+description: Navigator unread counts
 properties:
-  $ref: "./sharedProperties/Navigator.yaml"
   unread_count:
     type: number
     description: Count of unread interactions from any assigned patients.
@@ -10,3 +9,7 @@ properties:
     type: number
     description: Count of unread interactions from unknown senders.
     example: 4
+  unread_mention_count:
+    type: number
+    description: Count of unread mentions.
+    example: 7

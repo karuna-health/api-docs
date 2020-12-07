@@ -15,7 +15,10 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../../../components/schemas/NavigatorWithUnreadCounts.yaml"
+            $ref: "../../../components/schemas/Navigator.yaml"
+            # TODO(gualcm): fix this
+            # additionalProperties:
+            #   $ref: "../../../components/schemas/NavigatorUnreadCounts.yaml"
 
     401:
       $ref: "../../../components/responses/NotAuthorized.yaml"
@@ -49,7 +52,9 @@ patch:
           type: object
           properties:
             navigator:
-              $ref: "../../../components/schemas/Navigator.yaml"
+              allOf:
+                - $ref: "../../../components/schemas/Navigator.yaml"
+                - $ref: "../../../components/schemas/NavigatorUnreadCounts.yaml"
   responses:
     200:
       description: Navigator details
@@ -59,7 +64,9 @@ patch:
             type: object
             properties:
               navigator:
-                $ref: "../../../components/schemas/NavigatorWithUnreadCounts.yaml"
+                allOf:
+                  - $ref: "../../../components/schemas/Navigator.yaml"
+                  - $ref: "../../../components/schemas/NavigatorUnreadCounts.yaml"
     401:
       $ref: "../../../components/responses/NotAuthorized.yaml"
     404:

@@ -1,7 +1,6 @@
 type: object
-description: Channel details including `owner_type` and `owner_id`
+description: Channel owner details
 properties:
-  $ref: "./sharedProperties/Channel.yaml"
   owner_type:
     type: string
     description: Type of entity that owns the channel

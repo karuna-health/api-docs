@@ -1,4 +1,74 @@
 type: object
 description: Navigator Data
 properties:
-  $ref: "./sharedProperties/Navigator.yaml"
+  id:
+    type: number
+    description: Navigator ID
+    example: 8374
+  first_name:
+    type: string
+    description: Navigator first name
+    example: Gual
+  middle_name:
+    type: string
+    description: Navigator middle name
+    example: Antonio
+  last_name:
+    type: string
+    description: Navigator last name
+    example: Casas
+  handle:
+    type: string
+    description: Navigator Handle
+    example: gcasas
+  role:
+    type: string
+    description: Navigator's role
+    enum: [normal, admin]
+    example: normal
+  patients_assigned:
+    type: number
+    description: Count of patients the navigator has assigned to them
+    example: 27
+  clinician_id:
+    type: string
+    description: Dunno
+    example: Dunno
+  preferred_medium:
+    type: string
+    description: Dunno
+    example: async
+  preferred_channel_id:
+    type: number
+    description:
+      ID of channel that's marked as preferred for automated communications
+    example: 3842
+  primary_patients_assigned:
+    type: number
+    description:
+      Count of patients for which the navigator is marked as primary navigator
+    example: 12
+  last_login:
+    type: string
+    description: Last login's timestamp
+    example: 2020-12-01T17:05:40.437Z
+  organization_role:
+    type: string
+    description:
+      Role that the navigator performs at the organization. Each organization
+      has their own custom roles. If no role is specified, the role "navigator"
+      is assumed.
+    example: screener
+  subscribed_to:
+    type: array
+    description: Services to which the navigator is subscribed.
+    items:
+      type: string
+      example: "daily_digest"
+  channels:
+    type: array
+    description: Navigator's channels
+    items:
+      allOf:
+        - $ref: "./Channel.yaml"
+        - $ref: "./ChannelOwnerDetails.yaml"

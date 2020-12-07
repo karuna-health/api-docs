@@ -670,7 +670,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NavigatorWithUnreadCounts'
+                $ref: '#/components/schemas/Navigator'
         '401':
           $ref: '#/components/responses/NotAuthorized'
         '404':
@@ -701,7 +701,9 @@ paths:
               type: object
               properties:
                 navigator:
-                  $ref: '#/components/schemas/Navigator'
+                  allOf:
+                    - $ref: '#/components/schemas/Navigator'
+                    - $ref: '#/components/schemas/NavigatorUnreadCounts'
       responses:
         '200':
           description: Navigator details
@@ -711,7 +713,9 @@ paths:
                 type: object
                 properties:
                   navigator:
-                    $ref: '#/components/schemas/NavigatorWithUnreadCounts'
+                    allOf:
+                      - $ref: '#/components/schemas/Navigator'
+                      - $ref: '#/components/schemas/NavigatorUnreadCounts'
         '401':
           $ref: '#/components/responses/NotAuthorized'
         '404':
@@ -868,10 +872,201 @@ components:
                 type: boolean
                 example: false
   schemas:
+    Channel:
+      type: object
+      description: Channel details
+      properties:
+        id:
+          type: number
+          description: Channel's ID
+          example: 12345
+        source:
+          type: string
+          enum:
+            - email
+            - landline
+            - sms
+            - push
+          description: Type of channel
+          example: sms
+        identifier:
+          type: string
+          description: Channel's identifier
+          example: '+12345678987'
+        verified:
+          type: boolean
+          description: Dunno
+          example: false
+        label:
+          type: string
+          description: Channel's label
+          example: Personal cell
+        note:
+          type: string
+          description: Note related to the channel
+          example: 'Do not call after 13:00'
+        meta:
+          type: object
+          properties:
+            lookup_failed:
+              type: boolean
+              description: >-
+                Flag specifying whether the number lookup failed if the channel
+                is a phone number.
+              example: false
+            carrier:
+              type: object
+              description: Carrier metadata
+              properties:
+                name:
+                  type: string
+                  description: Carrier name
+                  example: Verizon Wireless
+                type:
+                  type: string
+                  example: 1
+        uuid:
+          type: string
+          description: Dunno
+          example: Dunno
+        organization_id:
+          type: number
+          description: ID of organization to which the channel and channel owner belong
+          example: 4
+        authenticated:
+          type: boolean
+          description: Dunno
+          example: false
+        has_consent:
+          type: boolean
+          description: >-
+            Flag specifying whether the owner has granted consent for
+            communication over the channel
+          example: true
+    ChannelOwnerDetails:
+      type: object
+      description: Channel owner details
+      properties:
+        owner_type:
+          type: string
+          description: Type of entity that owns the channel
+          enum:
+            - patient
+            - navigator
+            - circle_of_care_member
+          example: navigator
+        owner_id:
+          type: number
+          description: ID of entity that owns the channel
+          example: 1232
+    Navigator:
+      type: object
+      description: Navigator Data
+      properties:
+        id:
+          type: number
+          description: Navigator ID
+          example: 8374
+        first_name:
+          type: string
+          description: Navigator first name
+          example: Gual
+        middle_name:
+          type: string
+          description: Navigator middle name
+          example: Antonio
+        last_name:
+          type: string
+          description: Navigator last name
+          example: Casas
+        handle:
+          type: string
+          description: Navigator Handle
+          example: gcasas
+        role:
+          type: string
+          description: Navigator's role
+          enum:
+            - normal
+            - admin
+          example: normal
+        patients_assigned:
+          type: number
+          description: Count of patients the navigator has assigned to them
+          example: 27
+        clinician_id:
+          type: string
+          description: Dunno
+          example: Dunno
+        preferred_medium:
+          type: string
+          description: Dunno
+          example: async
+        preferred_channel_id:
+          type: number
+          description: >-
+            ID of channel that's marked as preferred for automated
+            communications
+          example: 3842
+        primary_patients_assigned:
+          type: number
+          description: >-
+            Count of patients for which the navigator is marked as primary
+            navigator
+          example: 12
+        last_login:
+          type: string
+          description: Last login's timestamp
+          example: 2020-12-01T17:05:40.437Z
+        organization_role:
+          type: string
+          description: >-
+            Role that the navigator performs at the organization. Each
+            organization has their own custom roles. If no role is specified,
+            the role "navigator" is assumed.
+          example: screener
+        subscribed_to:
+          type: array
+          description: Services to which the navigator is subscribed.
+          items:
+            type: string
+            example: daily_digest
+        channels:
+          type: array
+          description: Navigator's channels
+          items:
+            allOf:
+              - $ref: '#/components/schemas/Channel'
+              - $ref: '#/components/schemas/ChannelOwnerDetails'
     Patient:
       type: object
       description: Patient Data
       properties:
+        id:
+          type: string
+          description: Patient ID
+          example: 1342
+        clinical_id:
+          type: string
+          description: Patient's clinical ID
+          example: 1234jkasa-asdfasdf13
+        default_channel_id:
+          type: number
+          description: >-
+            ID of the channel to select as default and be used for automated
+            communications
+          example: 1847
+        primary_navigator_id:
+          type: number
+          description: ID of navigator that's been marked as primary for the patient
+          example: 9273
+        assigned_label_ids:
+          type: array
+          description: IDs of labels that the patient currently has assigned to them
+          items:
+            type: number
+            description: ID of label
+            example: 238
         first_name:
           type: string
           description: Patient's first name
@@ -965,12 +1160,7 @@ components:
               description: Timestamp (YYYY-MM-DD) from when the archive event happened
               example: 2020-05-14T00:00:00.000Z
             actor:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: name
-                  example: Name
+              $ref: '#/components/schemas/Navigator'
             reason:
               type: string
               enum:
@@ -1071,111 +1261,16 @@ components:
             type: object
             properties:
               name:
-                type: name
+                type: string
                 description: Name
                 example: Name
         current_navigator_read_marker:
           type: object
           properties:
             name:
-              type: name
+              type: string
               description: Name
               example: Name
-        id:
-          type: string
-          description: Patient ID
-          example: 1342
-        clinical_id:
-          type: string
-          description: Patient's clinical ID
-          example: 1234jkasa-asdfasdf13
-        default_channel_id:
-          type: number
-          description: >-
-            ID of the channel to select as default and be used for automated
-            communications
-          example: 1847
-        primary_navigator_id:
-          type: number
-          description: ID of navigator that's been marked as primary for the patient
-          example: 9273
-        assigned_label_ids:
-          type: array
-          description: IDs of labels that the patient currently has assigned to them
-          items:
-            type: number
-            description: ID of label
-            example: 238
-    Channel:
-      type: object
-      properties:
-        id:
-          type: number
-          description: Channel's ID
-          example: 12345
-        source:
-          type: string
-          enum:
-            - email
-            - landline
-            - sms
-            - push
-          description: Type of channel
-          example: sms
-        identifier:
-          type: string
-          description: Channel's identifier
-          example: '+12345678987'
-        verified:
-          type: boolean
-          description: Dunno
-          example: false
-        label:
-          type: string
-          description: Channel's label
-          example: Personal cell
-        note:
-          type: string
-          description: Note related to the channel
-          example: 'Do not call after 13:00'
-        meta:
-          type: object
-          properties:
-            lookup_failed:
-              type: boolean
-              description: >-
-                Flag specifying whether the number lookup failed if the channel
-                is a phone number.
-              example: false
-            carrier:
-              type: object
-              description: Carrier metadata
-              properties:
-                name:
-                  type: string
-                  description: Carrier name
-                  example: Verizon Wireless
-                type:
-                  type: string
-                  example: 1
-        uuid:
-          type: string
-          description: Dunno
-          example: Dunno
-        organization_id:
-          type: number
-          description: ID of organization to which the channel and channel owner belong
-          example: 4
-        authenticated:
-          type: boolean
-          description: Dunno
-          example: false
-        has_consent:
-          type: boolean
-          description: >-
-            Flag specifying whether the owner has granted consent for
-            communication over the channel
-          example: true
     PaginatedResults:
       type: object
       description: Pagination data
@@ -1196,89 +1291,6 @@ components:
           type: string
           description: Pointer to next results page. `null` if there is no next page.
           example: 05d9a970030000000a04
-    ChannelDetailed:
-      type: object
-      description: Channel details including `owner_type` and `owner_id`
-      properties:
-        owner_type:
-          type: string
-          description: Type of entity that owns the channel
-          enum:
-            - patient
-            - navigator
-            - circle_of_care_member
-          example: navigator
-        owner_id:
-          type: number
-          description: ID of entity that owns the channel
-          example: 1232
-        id:
-          type: number
-          description: Channel's ID
-          example: 12345
-        source:
-          type: string
-          enum:
-            - email
-            - landline
-            - sms
-            - push
-          description: Type of channel
-          example: sms
-        identifier:
-          type: string
-          description: Channel's identifier
-          example: '+12345678987'
-        verified:
-          type: boolean
-          description: Dunno
-          example: false
-        label:
-          type: string
-          description: Channel's label
-          example: Personal cell
-        note:
-          type: string
-          description: Note related to the channel
-          example: 'Do not call after 13:00'
-        meta:
-          type: object
-          properties:
-            lookup_failed:
-              type: boolean
-              description: >-
-                Flag specifying whether the number lookup failed if the channel
-                is a phone number.
-              example: false
-            carrier:
-              type: object
-              description: Carrier metadata
-              properties:
-                name:
-                  type: string
-                  description: Carrier name
-                  example: Verizon Wireless
-                type:
-                  type: string
-                  example: 1
-        uuid:
-          type: string
-          description: Dunno
-          example: Dunno
-        organization_id:
-          type: number
-          description: ID of organization to which the channel and channel owner belong
-          example: 4
-        authenticated:
-          type: boolean
-          description: Dunno
-          example: false
-        has_consent:
-          type: boolean
-          description: >-
-            Flag specifying whether the owner has granted consent for
-            communication over the channel
-          example: true
     Call:
       type: object
       description: Call details
@@ -1345,7 +1357,9 @@ components:
           description: Timestamp
           example: 2020-10-23T00:00:00.000Z
         channel:
-          $ref: '#/components/schemas/ChannelDetailed'
+          allOf:
+            - $ref: '#/components/schemas/Channel'
+            - $ref: '#/components/schemas/ChannelOwnerDetails'
         direction:
           type: string
           enum:
@@ -1411,10 +1425,26 @@ components:
         navigator:
           type: object
           properties:
-            name:
+            id:
+              type: number
+              description: Navigator ID
+              example: 8374
+            first_name:
               type: string
-              description: name
-              example: Name
+              description: Navigator first name
+              example: Gual
+            middle_name:
+              type: string
+              description: Navigator middle name
+              example: Antonio
+            last_name:
+              type: string
+              description: Navigator last name
+              example: Casas
+            handle:
+              type: string
+              description: Navigator Handle
+              example: gcasas
         spec:
           type: object
           properties:
@@ -1444,33 +1474,9 @@ components:
           description: List of interaction messages
           items:
             $ref: '#/components/schemas/Message'
-    Navigator:
+    NavigatorUnreadCounts:
       type: object
-      description: Navigator Data
-      properties:
-        id:
-          type: number
-          description: Navigator's ID
-          example: 1234
-        first_name:
-          type: string
-          description: Navigator's first name
-          example: Gual
-        middle_name:
-          type: string
-          description: Navigator's Middle name
-          example: Antonio
-        last_name:
-          type: string
-          description: Navigator's last name
-          example: Casas
-        handle:
-          type: string
-          description: Navigator's handle
-          example: gcasas
-    NavigatorWithUnreadCounts:
-      type: object
-      description: Navigator Data including unread counts.
+      description: Navigator unread counts
       properties:
         unread_count:
           type: number
@@ -1480,26 +1486,10 @@ components:
           type: number
           description: Count of unread interactions from unknown senders.
           example: 4
-        id:
+        unread_mention_count:
           type: number
-          description: Navigator's ID
-          example: 1234
-        first_name:
-          type: string
-          description: Navigator's first name
-          example: Gual
-        middle_name:
-          type: string
-          description: Navigator's Middle name
-          example: Antonio
-        last_name:
-          type: string
-          description: Navigator's last name
-          example: Casas
-        handle:
-          type: string
-          description: Navigator's handle
-          example: gcasas
+          description: Count of unread mentions.
+          example: 7
   parameters:
     PatientId:
       in: path
