@@ -26,3 +26,5 @@ get:
                 description: List of patient interactions
                 items:
                   $ref: "../../../../components/schemas/Interaction.yaml"
+    401:
+      $ref: "../../../../components/responses/NotAuthorized.yaml"

@@ -326,6 +326,92 @@ paths:
                 $ref: '#/components/schemas/Patient'
         '401':
           $ref: '#/components/responses/NotAuthorized'
+  '/patients/{patientId}/follow':
+    put:
+      tags:
+        - Patients
+        - Navigators
+      operationId: unfollowPatient
+      summary: Unollow Patient
+      description: >-
+        Remove patient from the currently logged in navigator's followed
+        patients
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      responses:
+        '200':
+          description: Updated patient
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/unfollow':
+    put:
+      tags:
+        - Patients
+        - Navigators
+      operationId: followPatient
+      summary: Follow Patient
+      description: Add patient to the currently logged in navigator's followed patients
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      responses:
+        '200':
+          description: Updated patient
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/primary_navigator':
+    put:
+      tags:
+        - Patients
+        - Navigators
+      operationId: assignPrimaryNavigator
+      summary: Assign Primary Navigator
+      description: Mark a navigator as primary navigator for a patient
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      requestBody:
+        description: ID of navigator to be marked as primary
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                primary_navigator_id:
+                  type: number
+                  description: Navigator ID
+                  example: 24359
+      responses:
+        '200':
+          description: Updated patient
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
   '/patients/{patientId}/channels':
     post:
       tags:
@@ -444,6 +530,8 @@ paths:
                     description: List of patient interactions
                     items:
                       $ref: '#/components/schemas/Interaction'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
   /navigators/token:
     post:
       tags:
@@ -845,7 +933,9 @@ components:
                 type: string
                 example: bea198df-27fa-4190-bbe2-25197259d9a2d
               retryable:
-                description: Whether the request is retryable
+                description: >-
+                  Whether the request is retryable. This is mostly used by the
+                  backend services.
                 type: boolean
                 example: false
     ResourceNotFound:
@@ -868,10 +958,36 @@ components:
                 type: string
                 example: Couldn't find that Resource
               retryable:
-                description: Whether the request is retryable
+                description: >-
+                  Whether the request is retryable. This is mostly used by the
+                  backend services.
                 type: boolean
                 example: false
   schemas:
+    NavigatorBasicDetails:
+      type: object
+      description: Navigator Basic Details
+      properties:
+        id:
+          type: number
+          description: Navigator ID
+          example: 8374
+        first_name:
+          type: string
+          description: Navigator first name
+          example: Gual
+        middle_name:
+          type: string
+          description: Navigator middle name
+          example: Antonio
+        last_name:
+          type: string
+          description: Navigator last name
+          example: Casas
+        handle:
+          type: string
+          description: Navigator Handle
+          example: gcasas
     Channel:
       type: object
       description: Channel details
@@ -960,84 +1076,82 @@ components:
           description: ID of entity that owns the channel
           example: 1232
     Navigator:
+      allOf:
+        - $ref: '#/components/schemas/NavigatorBasicDetails'
+        - type: object
+          description: Navigator Data
+          properties:
+            role:
+              type: string
+              description: Navigator's role
+              enum:
+                - normal
+                - admin
+              example: normal
+            patients_assigned:
+              type: number
+              description: Count of patients the navigator has assigned to them
+              example: 27
+            clinician_id:
+              type: string
+              description: Dunno
+              example: Dunno
+            preferred_medium:
+              type: string
+              description: Dunno
+              example: async
+            preferred_channel_id:
+              type: number
+              description: >-
+                ID of channel that's marked as preferred for automated
+                communications
+              example: 3842
+            primary_patients_assigned:
+              type: number
+              description: >-
+                Count of patients for which the navigator is marked as primary
+                navigator
+              example: 12
+            last_login:
+              type: string
+              description: Last login's timestamp
+              example: 2020-12-01T17:05:40.437Z
+            organization_role:
+              type: string
+              description: >-
+                Role that the navigator performs at the organization. Each
+                organization has their own custom roles. If no role is
+                specified, the role "navigator" is assumed.
+              example: screener
+            subscribed_to:
+              type: array
+              description: Services to which the navigator is subscribed.
+              items:
+                type: string
+                example: daily_digest
+            channels:
+              type: array
+              description: Navigator's channels
+              items:
+                allOf:
+                  - $ref: '#/components/schemas/Channel'
+                  - $ref: '#/components/schemas/ChannelOwnerDetails'
+    ConversationReadMarker:
       type: object
-      description: Navigator Data
+      description: Navigator ID with the last interaction ID the navigators has read
       properties:
-        id:
+        navigator_id:
           type: number
-          description: Navigator ID
-          example: 8374
-        first_name:
-          type: string
-          description: Navigator first name
-          example: Gual
-        middle_name:
-          type: string
-          description: Navigator middle name
-          example: Antonio
-        last_name:
-          type: string
-          description: Navigator last name
-          example: Casas
-        handle:
-          type: string
-          description: Navigator Handle
-          example: gcasas
-        role:
-          type: string
-          description: Navigator's role
-          enum:
-            - normal
-            - admin
-          example: normal
-        patients_assigned:
+          description: ID of navigator
+          example: 39478
+        last_read:
           type: number
-          description: Count of patients the navigator has assigned to them
-          example: 27
-        clinician_id:
+          description: ID of last read interaction
+          example: 89712
+        read_at:
           type: string
-          description: Dunno
-          example: Dunno
-        preferred_medium:
-          type: string
-          description: Dunno
-          example: async
-        preferred_channel_id:
-          type: number
-          description: >-
-            ID of channel that's marked as preferred for automated
-            communications
-          example: 3842
-        primary_patients_assigned:
-          type: number
-          description: >-
-            Count of patients for which the navigator is marked as primary
-            navigator
-          example: 12
-        last_login:
-          type: string
-          description: Last login's timestamp
-          example: 2020-12-01T17:05:40.437Z
-        organization_role:
-          type: string
-          description: >-
-            Role that the navigator performs at the organization. Each
-            organization has their own custom roles. If no role is specified,
-            the role "navigator" is assumed.
-          example: screener
-        subscribed_to:
-          type: array
-          description: Services to which the navigator is subscribed.
-          items:
-            type: string
-            example: daily_digest
-        channels:
-          type: array
-          description: Navigator's channels
-          items:
-            allOf:
-              - $ref: '#/components/schemas/Channel'
-              - $ref: '#/components/schemas/ChannelOwnerDetails'
+          description: Timestamp of when the interaction was read
+          example: '2020-07-03T17:10:57.567Z'
     Patient:
       type: object
       description: Patient Data
@@ -1160,7 +1274,7 @@ components:
               description: Timestamp (YYYY-MM-DD) from when the archive event happened
               example: 2020-05-14T00:00:00.000Z
             actor:
-              $ref: '#/components/schemas/Navigator'
+              $ref: '#/components/schemas/NavigatorBasicDetails'
             reason:
               type: string
               enum:
@@ -1238,6 +1352,8 @@ components:
             Flat specifying whether the patient was created for internal testing
             purposes
           example: false
+        current_navigator:
+          $ref: '#/components/schemas/Navigator'
         call_forwarding_override:
           type: object
           description: Information about who to forward calls
@@ -1258,13 +1374,9 @@ components:
             Information about what interactions have been read by what
             navigators
           items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name
-                example: Name
+            $ref: '#/components/schemas/ConversationReadMarker'
         current_navigator_read_marker:
+          $ref: '#/components/schemas/ConversationReadMarker'
           type: object
           properties:
             name:
@@ -1423,28 +1535,7 @@ components:
                 description: ID of label
                 example: 238
         navigator:
-          type: object
-          properties:
-            id:
-              type: number
-              description: Navigator ID
-              example: 8374
-            first_name:
-              type: string
-              description: Navigator first name
-              example: Gual
-            middle_name:
-              type: string
-              description: Navigator middle name
-              example: Antonio
-            last_name:
-              type: string
-              description: Navigator last name
-              example: Casas
-            handle:
-              type: string
-              description: Navigator Handle
-              example: gcasas
+          $ref: '#/components/schemas/NavigatorBasicDetails'
         spec:
           type: object
           properties:

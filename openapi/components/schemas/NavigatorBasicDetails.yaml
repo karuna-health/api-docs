@@ -1,0 +1,23 @@
+type: object
+description: Navigator Basic Details
+properties:
+  id:
+    type: number
+    description: Navigator ID
+    example: 8374
+  first_name:
+    type: string
+    description: Navigator first name
+    example: Gual
+  middle_name:
+    type: string
+    description: Navigator middle name
+    example: Antonio
+  last_name:
+    type: string
+    description: Navigator last name
+    example: Casas
+  handle:
+    type: string
+    description: Navigator Handle
+    example: gcasas

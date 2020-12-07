@@ -110,3 +110,4 @@
 - [ ] What's message.id_from_channel?
 
     3rd party identifier from downstream providers
+- [ ] what is patient.current_navigator? I think it's not included everywhere

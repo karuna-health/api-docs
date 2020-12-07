@@ -115,7 +115,7 @@ properties:
         description: Timestamp (YYYY-MM-DD) from when the archive event happened
         example: 2020-05-14
       actor:
-        $ref: "./Navigator.yaml"
+        $ref: "./NavigatorBasicDetails.yaml"
       reason:
         type: string
         enum: [karuna_action, navigator_action, import_action]
@@ -185,6 +185,8 @@ properties:
       Flat specifying whether the patient was created for internal testing
       purposes
     example: false
+  current_navigator:
+    $ref: "./Navigator.yaml"
   call_forwarding_override:
     type: object
     description: Information about who to forward calls
@@ -204,17 +206,9 @@ properties:
     description:
       Information about what interactions have been read by what navigators
     items:
-      # TODO(gualcm): fix
-      # $ref: "./ConversationReadMarker.yaml"
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name
-          example: Name
+      $ref: "./ConversationReadMarker.yaml"
   current_navigator_read_marker:
-    # TODO(gualcm): fix
-    # $ref: "./ConversationReadMarker.yaml"
+    $ref: "./ConversationReadMarker.yaml"
     type: object
     properties:
       name:

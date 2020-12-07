@@ -113,6 +113,12 @@ paths:
 
   /patients:
     $ref: "paths/patients/index.yaml"
+  /patients/{patientId}/follow:
+    $ref: "paths/patients/{patientId}/follow.yaml"
+  /patients/{patientId}/unfollow:
+    $ref: "paths/patients/{patientId}/unfollow.yaml"
+  /patients/{patientId}/primary_navigator:
+    $ref: "paths/patients/{patientId}/primary_navigator.yaml"
   /patients/{patientId}/channels:
     $ref: "paths/patients/{patientId}/channels/index.yaml"
   /patients/{patientId}/channels/{channelId}:

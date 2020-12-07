@@ -17,6 +17,8 @@ content:
           type: string
           example: "Couldn't find that Resource"
         retryable:
-          description: Whether the request is retryable
+          description:
+            Whether the request is retryable. This is mostly used by the backend
+            services.
           type: boolean
           example: false

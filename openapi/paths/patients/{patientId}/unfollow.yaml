@@ -1,0 +1,24 @@
+put:
+  tags:
+    - Patients
+    - Navigators
+  operationId: followPatient
+  summary: Follow Patient
+  description:
+    Add patient to the currently logged in navigator's followed patients
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../components/parameters/PatientId.yaml"
+  responses:
+    200:
+      description: Updated patient
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Patient.yaml"
+    401:
+      $ref: "../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../components/responses/ResourceNotFound.yaml"

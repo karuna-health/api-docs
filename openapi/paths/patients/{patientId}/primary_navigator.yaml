@@ -1,0 +1,35 @@
+put:
+  tags:
+    - Patients
+    - Navigators
+  operationId: assignPrimaryNavigator
+  summary: Assign Primary Navigator
+  description: Mark a navigator as primary navigator for a patient
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../components/parameters/PatientId.yaml"
+  requestBody:
+    description: ID of navigator to be marked as primary
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            primary_navigator_id:
+              type: number
+              description: Navigator ID
+              example: 24359
+  responses:
+    200:
+      description: Updated patient
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Patient.yaml"
+    401:
+      $ref: "../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../components/responses/ResourceNotFound.yaml"

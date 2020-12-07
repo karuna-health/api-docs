@@ -17,6 +17,8 @@ content:
           type: string
           example: "bea198df-27fa-4190-bbe2-25197259d9a2d"
         retryable:
-          description: Whether the request is retryable
+          description:
+            Whether the request is retryable. This is mostly used by the backend
+            services.
           type: boolean
           example: false

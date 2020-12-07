@@ -36,30 +36,7 @@ properties:
           description: ID of label
           example: 238
   navigator:
-    type: object
-    properties:
-      # TODO(gualcm): use shared schema. I think this is also used
-      # in schema/Patient.archive_event.actor
-      id:
-        type: number
-        description: Navigator ID
-        example: 8374
-      first_name:
-        type: string
-        description: Navigator first name
-        example: Gual
-      middle_name:
-        type: string
-        description: Navigator middle name
-        example: Antonio
-      last_name:
-        type: string
-        description: Navigator last name
-        example: Casas
-      handle:
-        type: string
-        description: Navigator Handle
-        example: gcasas
+    $ref: "./NavigatorBasicDetails.yaml"
   spec:
     type: object
     properties:
