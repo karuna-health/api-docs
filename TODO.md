@@ -112,3 +112,148 @@
     3rd party identifier from downstream providers
 - [ ] what is patient.current_navigator? I think it's not included everywhere
 - [ ] Not sure how to document CareTeamMembers
+
+### ENDPOINTS
+
+Attachments
+
+POST /attachments
+POST /attachments/upload
+
+========================
+
+Navigators
+
+X GET /tokens/check
+
+X GET /navigators
+
+X POST /navigators/token
+
+X DELETE /navigators/logout
+
+X GET, X PATCH /navigators/{navigatorId}
+
+X POST /navigators/{navigatorId}/channels
+
+X PATCH, X DELETE /navigators/{navigatorId}/channels/{channelId}
+
+X POST /navigators/reset_password
+
+X POST /navigators/update_password
+
+POST /navigators/invite
+
+========================
+
+Organizations
+
+X GET /organizations/{slug}
+
+========================
+
+Campaigns
+
+GET, POST /campaigns
+
+PATCH /campaigns/{campaignId}
+
+GET /campaigns/conversation_modules
+
+========================
+
+Care Team Members
+
+POST /care_team_members/assign
+
+========================
+
+Patients
+
+X DELETE /patients/{patientId}/care_team_members/{careTeamMemberId}
+
+X PUT /patients/{patientId}/primary_navigator
+
+X PUT /patients/{patientId}/follow
+
+X PUT /patients/{patientId}/unfollow
+
+X POST /patients/{patientId}/channels
+
+X DELETE, X PATCH /patients/{patientId}/channels/{channelId}
+
+X POST /patients/{patientId}/circle_of_care_members
+
+X PATCH /patients/{patientId}/circle_of_care_members/{ccmId}
+
+X GET /patients/{patientId}/interactions
+
+X GET /patients/{patientId}/circle_of_care_members/{ccmId}/interactions
+
+X PUT, X DELETE /patients/{patientId}/labels/{labelId}
+
+GET /patients/detailed_with_channels
+
+X GET, X DELETE, X PATCH /patients/{patientId}
+
+X GET /patients/{patientId}/circle_of_care_members
+
+PATCH /patients/batch
+
+X POST /patients/archive
+
+X POST /patients/merge
+
+X POST /patients
+
+X DELETE, X POST /patients/{patientId}/call_forwarding_override
+
+========================
+
+Labels
+
+X GET /labels
+
+========================
+
+Channels
+
+POST /channels/{channelId}/start_module
+
+========================
+
+Circle of Care Members
+
+X POST /circle_of_care_members/{ccmId}/channels
+
+X DELETE, X PATCH /circle_of_care_members/{ccmId}/channels/{channelId}
+
+========================
+
+Interactions
+
+GET, PATCH /interactions/{interactionId}
+
+PATCH /interactions/batch
+
+POST /interactions
+
+========================
+
+Calls
+
+POST /calls/{call_id}/meta
+
+========================
+
+Messages
+
+POST /languages/translate
+
+========================
+
+Templates
+
+GET /templates
+
+POST /templates/{templateName}/context
