@@ -1,0 +1,7 @@
+in: path
+name: labelId
+description: Label ID
+schema:
+  type: number
+required: true
+example: 9128

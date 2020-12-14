@@ -1,0 +1,69 @@
+post:
+  tags:
+    - Patients
+  operationId: initiateCallForwardingOverride
+  summary: Initiate Call Forwading Override
+  description: Initiate Call Forwading Override
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../components/parameters/PatientId.yaml"
+  requestBody:
+    description:
+      ID of navigator to whom calls will be forwarded and call forwarding ending
+      date
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            expires_on:
+              type: string
+              description: Timestamp of when the call forwarding will end
+              example: 2020-12-14
+            navigator_id:
+              type: number
+              description: ID of Navigator to forward calls to
+              example: 23409
+  responses:
+    200:
+      description: Call forwarded to Navigator
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              navigator:
+                description: Navigator to whom calls will be forwarded
+                $ref: "../../../components/schemas/Navigator.yaml"
+              expires_on:
+                type: string
+                description: Timestamp of when the call forwarding will end
+                example: 2020-12-14
+
+    401:
+      $ref: "../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../components/responses/ResourceNotFound.yaml"
+
+delete:
+  tags:
+    - Patients
+  operationId: stopCallForwardingOverride
+  summary: Stop Call Forwading Override for a patient
+  description: Stop Call Forwading Override
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../components/parameters/PatientId.yaml"
+  responses:
+    200:
+      description: Call forwarding override stopped
+
+    401:
+      $ref: "../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../components/responses/ResourceNotFound.yaml"

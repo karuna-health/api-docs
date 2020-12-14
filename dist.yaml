@@ -97,6 +97,29 @@ tags:
   - name: Interactions
     description: Endpoints to manage interactions.
 paths:
+  /labels:
+    get:
+      tags:
+        - Organizations
+        - Patients
+      operationId: getAllPatientLabels
+      summary: Get Patient Labels
+      description: Get all Labels available for an Organization
+      security:
+        - service_token: []
+          user_token: []
+      responses:
+        '200':
+          description: Available Labels
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of available Labels
+                items:
+                  $ref: '#/components/schemas/Label'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
   /tokens/check:
     get:
       tags:
@@ -309,6 +332,7 @@ paths:
         - Patients
       operationId: postPatient
       summary: Create New Patient
+      description: Create a new Patient
       security:
         - service_token: []
           user_token: []
@@ -320,7 +344,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Patient'
       responses:
-        '201':
+        '200':
           description: Patient successfully created
           content:
             application/json:
@@ -328,6 +352,264 @@ paths:
                 $ref: '#/components/schemas/Patient'
         '401':
           $ref: '#/components/responses/NotAuthorized'
+  /patients/archive:
+    post:
+      tags:
+        - Patients
+      operationId: batchArchivePatients
+      summary: Archive Patients
+      description: Batch archive patients
+      security:
+        - service_token: []
+          user_token: []
+      requestBody:
+        description: Array of IDs from Patients to be archived
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patient_ids:
+                  description: Array of Patient IDs
+                  type: array
+                  items:
+                    description: Patient ID
+                    type: number
+                    example: 51123
+      responses:
+        '200':
+          description: Archived Patients
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of Patients that were just archived
+                items:
+                  $ref: '#/components/schemas/Patient'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /patients/merge:
+    post:
+      tags:
+        - Patients
+      operationId: mergePatients
+      summary: Merge Patients
+      description: Merge Patients
+      security:
+        - service_token: []
+          user_token: []
+      requestBody:
+        description: IDs of Patients to be merged
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                source:
+                  type: object
+                  description: ID of source Patient
+                  properties:
+                    id:
+                      type: number
+                      description: Patient ID
+                      example: 1231
+                destination:
+                  type: object
+                  description: ID of destination Patient
+                  properties:
+                    id:
+                      type: number
+                      description: Patient ID
+                      example: 90234
+      responses:
+        '200':
+          description: Patients successfully merged
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  '/patients/{patientId}':
+    get:
+      tags:
+        - Patients
+      operationId: getPatient
+      summary: Get Patient
+      description: Get all patient details
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      responses:
+        '200':
+          description: Patient details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+    delete:
+      tags:
+        - Patients
+      operationId: discardPatient
+      summary: Discard Patient
+      description: Discard Patient
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      responses:
+        '200':
+          description: Discarded Patient details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+    patch:
+      tags:
+        - Patients
+      operationId: patchPatient
+      summary: Update Patient
+      description: Update Patient details
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      requestBody:
+        description: Patient details to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patient:
+                  $ref: '#/components/schemas/Patient'
+      responses:
+        '200':
+          description: Updated Patient details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/labels/{labelId}':
+    put:
+      tags:
+        - Patients
+      operationId: assignPatientLabel
+      summary: Assign Patient Label
+      description: Assign Label to a Patient
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/LabelId'
+      responses:
+        '200':
+          description: Label assigned to Patient
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+    delete:
+      tags:
+        - Patients
+      operationId: unassignPatientLabel
+      summary: Unassign Patient Label
+      description: Unassign Label from a Patient
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/LabelId'
+      responses:
+        '200':
+          description: Label unassigned to Patient
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/call_forwarding_override':
+    post:
+      tags:
+        - Patients
+      operationId: initiateCallForwardingOverride
+      summary: Initiate Call Forwading Override
+      description: Initiate Call Forwading Override
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      requestBody:
+        description: >-
+          ID of navigator to whom calls will be forwarded and call forwarding
+          ending date
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expires_on:
+                  type: string
+                  description: Timestamp of when the call forwarding will end
+                  example: 2020-12-14T00:00:00.000Z
+                navigator_id:
+                  type: number
+                  description: ID of Navigator to forward calls to
+                  example: 23409
+      responses:
+        '200':
+          description: Call forwarded to Navigator
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  navigator:
+                    description: Navigator to whom calls will be forwarded
+                    $ref: '#/components/schemas/Navigator'
+                  expires_on:
+                    type: string
+                    description: Timestamp of when the call forwarding will end
+                    example: 2020-12-14T00:00:00.000Z
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+    delete:
+      tags:
+        - Patients
+      operationId: stopCallForwardingOverride
+      summary: Stop Call Forwading Override for a patient
+      description: Stop Call Forwading Override
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+      responses:
+        '200':
+          description: Call forwarding override stopped
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
   '/patients/{patientId}/follow':
     put:
       tags:
@@ -417,7 +699,6 @@ paths:
   '/patients/{patientId}/channels':
     post:
       tags:
-        - Patients
         - Channels
       operationId: postPatientChannel
       summary: Create Patient Channel
@@ -452,7 +733,6 @@ paths:
     patch:
       tags:
         - Channels
-        - Patients
       operationId: patchPatientChannel
       summary: Patch Patient Channel
       description: Update Patient Channel Details
@@ -474,7 +754,7 @@ paths:
                   $ref: '#/components/schemas/Channel'
       responses:
         '200':
-          description: Patient channel updated
+          description: Patient Channel updated
           content:
             application/json:
               schema:
@@ -506,7 +786,6 @@ paths:
   '/patients/{patientId}/interactions':
     get:
       tags:
-        - Patients
         - Interactions
       operationId: getPatientInteractions
       summary: List Patient Interactions
@@ -588,24 +867,21 @@ paths:
           $ref: '#/components/responses/NotAuthorized'
         '404':
           $ref: '#/components/responses/ResourceNotFound'
-  '/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/interactions':
     get:
       tags:
+        - Patients
         - Circle of Care Members
-        - Interactions
-      operationId: getCcmInteractions
-      summary: List Circle of Care Member Interactions
-      description: Get paginated list of Circle of Care Member interactions.
+      operationId: getPatientCcms
+      summary: Patient Circle of Care Members
+      description: Get Patient's Circle of Care Members Details
       security:
         - service_token: []
           user_token: []
       parameters:
         - $ref: '#/components/parameters/PatientId'
-        - $ref: '#/components/parameters/CircleOfCareMemberId'
-        - $ref: '#/components/parameters/PaginationNext'
       responses:
         '200':
-          description: Circle of Care Member Interactions
+          description: Patient's Circle of Care Members
           content:
             application/json:
               schema:
@@ -613,16 +889,10 @@ paths:
                 properties:
                   pagination:
                     $ref: '#/components/schemas/PaginatedResults'
-                  interactions:
+                  circle_of_care_members:
                     type: array
-                    description: List of Circle of Care Member interactions
                     items:
-                      allOf:
-                        - $ref: '#/components/schemas/Interaction'
-                        - type: object
-                          properties:
-                            circle_of_care_member:
-                              $ref: '#/components/schemas/CircleOfCareMember'
+                      $ref: '#/components/schemas/CircleOfCareMember'
         '401':
           $ref: '#/components/responses/NotAuthorized'
         '404':
@@ -657,6 +927,134 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CircleOfCareMember'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/channels':
+    post:
+      tags:
+        - Channels
+      operationId: postCcmChannel
+      summary: Create Circle of Care Member Channel
+      description: Create Circle of Care Member Channel
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/CircleOfCareMemberId'
+      requestBody:
+        description: Details of Channel to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel:
+                  $ref: '#/components/schemas/Channel'
+      responses:
+        '201':
+          description: Circle of Care Member channel created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/channels/{channelId}':
+    delete:
+      tags:
+        - Channels
+      operationId: deleteCcmChannel
+      summary: Delete Circle of Care Member Channel
+      description: Delete Circle of Care Member Channel
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/CircleOfCareMemberId'
+        - $ref: '#/components/parameters/ChannelId'
+      responses:
+        '200':
+          description: Circle of Care Member Channel deleted
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+    patch:
+      tags:
+        - Channels
+      operationId: patchCcmChannel
+      summary: Patch Circle of Care Member Channel
+      description: Update Circle of Care Member Channel Details
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/CircleOfCareMemberId'
+        - $ref: '#/components/parameters/ChannelId'
+      requestBody:
+        description: Channel details to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel:
+                  $ref: '#/components/schemas/Channel'
+      responses:
+        '200':
+          description: Circle of Care Member Channel updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+        '404':
+          $ref: '#/components/responses/ResourceNotFound'
+  '/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/interactions':
+    get:
+      tags:
+        - Interactions
+        - Circle of Care Members
+      operationId: getCcmInteractions
+      summary: List Circle of Care Member Interactions
+      description: Get paginated list of Circle of Care Member interactions.
+      security:
+        - service_token: []
+          user_token: []
+      parameters:
+        - $ref: '#/components/parameters/PatientId'
+        - $ref: '#/components/parameters/CircleOfCareMemberId'
+        - $ref: '#/components/parameters/PaginationNext'
+      responses:
+        '200':
+          description: Circle of Care Member Interactions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pagination:
+                    $ref: '#/components/schemas/PaginatedResults'
+                  interactions:
+                    type: array
+                    description: List of Circle of Care Member interactions
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/Interaction'
+                        - type: object
+                          properties:
+                            circle_of_care_member:
+                              $ref: '#/components/schemas/CircleOfCareMember'
         '401':
           $ref: '#/components/responses/NotAuthorized'
         '404':
@@ -902,13 +1300,7 @@ paths:
         - service_token: []
           user_token: []
       parameters:
-        - in: path
-          name: navigatorId
-          description: Navigator ID
-          schema:
-            type: number
-          required: true
-          example: 1241
+        - $ref: '#/components/parameters/NavigatorId'
       requestBody:
         description: Navigator details to be updated
         required: true
@@ -940,7 +1332,6 @@ paths:
   '/navigators/{navigatorId}/channels':
     post:
       tags:
-        - Navigators
         - Channels
       operationId: postNavigatorChannel
       summary: Create Navigator Channel
@@ -973,7 +1364,6 @@ paths:
     patch:
       tags:
         - Channels
-        - Navigators
       operationId: patchNavigatorChannel
       summary: Patch Navigator Channel
       description: Update Navigator Channel Details
@@ -1041,58 +1431,33 @@ components:
         A token identifying the service or organization making the request. This
         token is global to your organization, and will be provided to you by
         Karuna.
-  responses:
-    NotAuthorized:
-      description: Invalid `service_token` or `user_token`
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                description: Type of error
-                type: string
-                example: bad_user_token
-              error_code:
-                description: Error code
-                type: string
-                example: 7943
-              message:
-                description: Error message
-                type: string
-                example: bea198df-27fa-4190-bbe2-25197259d9a2d
-              retryable:
-                description: >-
-                  Whether the request is retryable. This is mostly used by the
-                  backend services.
-                type: boolean
-                example: false
-    ResourceNotFound:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                description: Type of error
-                type: string
-                example: resource_not_found
-              error_code:
-                description: Error code
-                type: string
-                example: 191
-              message:
-                description: Error message
-                type: string
-                example: Couldn't find that Resource
-              retryable:
-                description: >-
-                  Whether the request is retryable. This is mostly used by the
-                  backend services.
-                type: boolean
-                example: false
   schemas:
+    Label:
+      type: object
+      description: Patient Label
+      properties:
+        id:
+          type: number
+          description: Label ID
+          example: 18273
+        slug:
+          type: string
+          description: Unique Label slug
+          example: requested-call
+        display_name:
+          type: string
+          description: Label display name
+          example: Requested Call
+        color:
+          type: string
+          description: Unique Label color
+          example: pink
+        user_assignable:
+          type: boolean
+          description: >-
+            Flag specifying whether a label can be manually assigned by a
+            Navigator to Patient.
+          example: true
     DefaultChannelId:
       type: number
       description: >-
@@ -1778,6 +2143,57 @@ components:
           type: number
           description: Count of unread mentions.
           example: 7
+  responses:
+    NotAuthorized:
+      description: Invalid `service_token` or `user_token`
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: Type of error
+                type: string
+                example: bad_user_token
+              error_code:
+                description: Error code
+                type: string
+                example: 7943
+              message:
+                description: Error message
+                type: string
+                example: bea198df-27fa-4190-bbe2-25197259d9a2d
+              retryable:
+                description: >-
+                  Whether the request is retryable. This is mostly used by the
+                  backend services.
+                type: boolean
+                example: false
+    ResourceNotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                description: Type of error
+                type: string
+                example: resource_not_found
+              error_code:
+                description: Error code
+                type: string
+                example: 191
+              message:
+                description: Error message
+                type: string
+                example: Couldn't find that Resource
+              retryable:
+                description: >-
+                  Whether the request is retryable. This is mostly used by the
+                  backend services.
+                type: boolean
+                example: false
   parameters:
     PatientId:
       in: path
@@ -1787,6 +2203,14 @@ components:
         type: number
       required: true
       example: 8324
+    LabelId:
+      in: path
+      name: labelId
+      description: Label ID
+      schema:
+        type: number
+      required: true
+      example: 9128
     ChannelId:
       in: path
       name: channelId

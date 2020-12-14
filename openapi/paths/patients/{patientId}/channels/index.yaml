@@ -1,6 +1,5 @@
 post:
   tags:
-    - Patients
     - Channels
   operationId: postPatientChannel
   summary: Create Patient Channel

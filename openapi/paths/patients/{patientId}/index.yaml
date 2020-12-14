@@ -1,0 +1,78 @@
+get:
+  tags:
+    - Patients
+  operationId: getPatient
+  summary: Get Patient
+  description: Get all patient details
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../components/parameters/PatientId.yaml"
+  responses:
+    200:
+      description: Patient details
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Patient.yaml"
+    401:
+      $ref: "../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../components/responses/ResourceNotFound.yaml"
+
+delete:
+  tags:
+    - Patients
+  operationId: discardPatient
+  summary: Discard Patient
+  description: Discard Patient
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../components/parameters/PatientId.yaml"
+  responses:
+    200:
+      description: Discarded Patient details
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Patient.yaml"
+    401:
+      $ref: "../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../components/responses/ResourceNotFound.yaml"
+
+patch:
+  tags:
+    - Patients
+  operationId: patchPatient
+  summary: Update Patient
+  description: Update Patient details
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../components/parameters/PatientId.yaml"
+  requestBody:
+    description: Patient details to be updated
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            patient:
+              $ref: "../../../components/schemas/Patient.yaml"
+  responses:
+    200:
+      description: Updated Patient details
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/Patient.yaml"
+    401:
+      $ref: "../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../components/responses/ResourceNotFound.yaml"

@@ -1,0 +1,36 @@
+post:
+  tags:
+    - Patients
+  operationId: batchArchivePatients
+  summary: Archive Patients
+  description: Batch archive patients
+  security:
+    - service_token: []
+      user_token: []
+  requestBody:
+    description: Array of IDs from Patients to be archived
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            patient_ids:
+              description: Array of Patient IDs
+              type: array
+              items:
+                description: Patient ID
+                type: number
+                example: 51123
+  responses:
+    200:
+      description: Archived Patients
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Array of Patients that were just archived
+            items:
+              $ref: "../../components/schemas/Patient.yaml"
+    401:
+      $ref: "../../components/responses/NotAuthorized.yaml"

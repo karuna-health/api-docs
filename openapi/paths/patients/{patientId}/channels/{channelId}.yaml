@@ -1,7 +1,6 @@
 patch:
   tags:
     - Channels
-    - Patients
   operationId: patchPatientChannel
   summary: Patch Patient Channel
   description: Update Patient Channel Details
@@ -23,7 +22,7 @@ patch:
               $ref: "../../../../components/schemas/Channel.yaml"
   responses:
     200:
-      description: Patient channel updated
+      description: Patient Channel updated
       content:
         application/json:
           schema:

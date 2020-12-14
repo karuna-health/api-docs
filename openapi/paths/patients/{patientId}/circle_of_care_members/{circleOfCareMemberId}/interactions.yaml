@@ -1,7 +1,7 @@
 get:
   tags:
-    - Circle of Care Members
     - Interactions
+    - Circle of Care Members
   operationId: getCcmInteractions
   summary: List Circle of Care Member Interactions
   description: Get paginated list of Circle of Care Member interactions.

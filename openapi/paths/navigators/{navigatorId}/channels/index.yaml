@@ -1,6 +1,5 @@
 post:
   tags:
-    - Navigators
     - Channels
   operationId: postNavigatorChannel
   summary: Create Navigator Channel

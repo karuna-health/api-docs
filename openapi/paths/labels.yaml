@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Organizations
+    - Patients
+  operationId: getAllPatientLabels
+  summary: Get Patient Labels
+  description: Get all Labels available for an Organization
+  security:
+    - service_token: []
+      user_token: []
+  responses:
+    200:
+      description: Available Labels
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Array of available Labels
+            items:
+              $ref: "../components/schemas/Label.yaml"
+    401:
+      $ref: "../components/responses/NotAuthorized.yaml"

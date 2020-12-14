@@ -1,0 +1,33 @@
+post:
+  tags:
+    - Channels
+  operationId: postCcmChannel
+  summary: Create Circle of Care Member Channel
+  description: Create Circle of Care Member Channel
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../../../components/parameters/PatientId.yaml"
+    - $ref: "../../../../../../components/parameters/CircleOfCareMemberId.yaml"
+  requestBody:
+    description: Details of Channel to be created
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            channel:
+              $ref: "../../../../../../components/schemas/Channel.yaml"
+  responses:
+    201:
+      description: Circle of Care Member channel created
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../../../components/schemas/Channel.yaml"
+    401:
+      $ref: "../../../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../../../components/responses/ResourceNotFound.yaml"

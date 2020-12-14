@@ -1,0 +1,41 @@
+post:
+  tags:
+    - Patients
+  operationId: mergePatients
+  summary: Merge Patients
+  # TODO(gualcm): better description
+  # I'm not entirely sure what happens when we merge patients
+  description: Merge Patients
+  security:
+    - service_token: []
+      user_token: []
+  requestBody:
+    description: IDs of Patients to be merged
+    required: true
+    content:
+      application/json:
+        schema:
+          properties:
+            source:
+              type: object
+              # TODO(gualcm): better description
+              description: ID of source Patient
+              properties:
+                id:
+                  type: number
+                  description: Patient ID
+                  example: 1231
+            destination:
+              type: object
+              # TODO(gualcm): better description
+              description: ID of destination Patient
+              properties:
+                id:
+                  type: number
+                  description: Patient ID
+                  example: 90234
+  responses:
+    200:
+      description: Patients successfully merged
+    401:
+      $ref: "../../components/responses/NotAuthorized.yaml"

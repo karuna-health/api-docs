@@ -1,7 +1,6 @@
 patch:
   tags:
     - Channels
-    - Navigators
   operationId: patchNavigatorChannel
   summary: Patch Navigator Channel
   description: Update Navigator Channel Details

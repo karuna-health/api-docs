@@ -1,0 +1,39 @@
+put:
+  tags:
+    - Patients
+  operationId: assignPatientLabel
+  summary: Assign Patient Label
+  description: Assign Label to a Patient
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../components/parameters/PatientId.yaml"
+    - $ref: "../../../../components/parameters/LabelId.yaml"
+  responses:
+    200:
+      description: Label assigned to Patient
+    401:
+      $ref: "../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../components/responses/ResourceNotFound.yaml"
+
+delete:
+  tags:
+    - Patients
+  operationId: unassignPatientLabel
+  summary: Unassign Patient Label
+  description: Unassign Label from a Patient
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../components/parameters/PatientId.yaml"
+    - $ref: "../../../../components/parameters/LabelId.yaml"
+  responses:
+    200:
+      description: Label unassigned to Patient
+    401:
+      $ref: "../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../components/responses/ResourceNotFound.yaml"

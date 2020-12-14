@@ -16,9 +16,6 @@ get:
         application/json:
           schema:
             $ref: "../../../components/schemas/Navigator.yaml"
-            # TODO(gualcm): fix this
-            # additionalProperties:
-            #   $ref: "../../../components/schemas/NavigatorUnreadCounts.yaml"
 
     401:
       $ref: "../../../components/responses/NotAuthorized.yaml"
@@ -36,13 +33,7 @@ patch:
     - service_token: []
       user_token: []
   parameters:
-    - in: path
-      name: navigatorId
-      description: Navigator ID
-      schema:
-        type: number
-      required: true
-      example: 1241
+    - $ref: "../../../components/parameters/NavigatorId.yaml"
   requestBody:
     description: Navigator details to be updated
     required: true

@@ -1,0 +1,25 @@
+type: object
+description: Patient Label
+properties:
+  id:
+    type: number
+    description: Label ID
+    example: 18273
+  slug:
+    type: string
+    description: Unique Label slug
+    example: requested-call
+  display_name:
+    type: string
+    description: Label display name
+    example: "Requested Call"
+  color:
+    type: string
+    description: Unique Label color
+    example: pink
+  user_assignable:
+    type: boolean
+    description:
+      Flag specifying whether a label can be manually assigned by a Navigator to
+      Patient.
+    example: true

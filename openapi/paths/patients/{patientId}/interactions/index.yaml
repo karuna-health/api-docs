@@ -1,6 +1,5 @@
 get:
   tags:
-    - Patients
     - Interactions
   operationId: getPatientInteractions
   summary: List Patient Interactions

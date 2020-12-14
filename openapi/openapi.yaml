@@ -108,6 +108,9 @@ tags:
     description: Endpoints to manage interactions.
 
 paths:
+  /labels:
+    $ref: "paths/labels.yaml"
+
   /tokens/check:
     $ref: "paths/tokens/check.yaml"
 
@@ -116,6 +119,16 @@ paths:
 
   /patients:
     $ref: "paths/patients/index.yaml"
+  /patients/archive:
+    $ref: "paths/patients/archive.yaml"
+  /patients/merge:
+    $ref: "paths/patients/merge.yaml"
+  /patients/{patientId}:
+    $ref: "paths/patients/{patientId}/index.yaml"
+  /patients/{patientId}/labels/{labelId}:
+    $ref: "paths/patients/{patientId}/labels/{labelId}.yaml"
+  /patients/{patientId}/call_forwarding_override:
+    $ref: "paths/patients/{patientId}/call_forwarding_override.yaml"
   /patients/{patientId}/follow:
     $ref: "paths/patients/{patientId}/follow.yaml"
   /patients/{patientId}/unfollow:
@@ -132,10 +145,14 @@ paths:
     $ref: "paths/patients/{patientId}/care_team_members/{careTeamMemberId}.yaml"
   /patients/{patientId}/circle_of_care_members:
     $ref: "paths/patients/{patientId}/circle_of_care_members/index.yaml"
-  /patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/interactions:
-    $ref: "paths/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/interactions.yaml"
   /patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}:
     $ref: "paths/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/index.yaml"
+  /patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/channels:
+    $ref: "paths/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/channels/index.yaml"
+  ? /patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/channels/{channelId}
+  : $ref: "paths/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/channels/{channelId}.yaml"
+  ? /patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/interactions
+  : $ref: "paths/patients/{patientId}/circle_of_care_members/{circleOfCareMemberId}/interactions.yaml"
 
   /navigators/token:
     $ref: "paths/navigators/token.yaml"

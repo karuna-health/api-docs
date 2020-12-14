@@ -1,0 +1,55 @@
+delete:
+  tags:
+    - Channels
+  operationId: deleteCcmChannel
+  summary: Delete Circle of Care Member Channel
+  description: Delete Circle of Care Member Channel
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../../../components/parameters/PatientId.yaml"
+    - $ref: "../../../../../../components/parameters/CircleOfCareMemberId.yaml"
+    - $ref: "../../../../../../components/parameters/ChannelId.yaml"
+  responses:
+    200:
+      description: Circle of Care Member Channel deleted
+    401:
+      $ref: "../../../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../../../components/responses/ResourceNotFound.yaml"
+
+patch:
+  tags:
+    - Channels
+  operationId: patchCcmChannel
+  summary: Patch Circle of Care Member Channel
+  description: Update Circle of Care Member Channel Details
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../../../components/parameters/PatientId.yaml"
+    - $ref: "../../../../../../components/parameters/CircleOfCareMemberId.yaml"
+    - $ref: "../../../../../../components/parameters/ChannelId.yaml"
+  requestBody:
+    description: Channel details to be updated
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            channel:
+              $ref: "../../../../../../components/schemas/Channel.yaml"
+  responses:
+    200:
+      description: Circle of Care Member Channel updated
+      content:
+        application/json:
+          schema:
+            $ref: "../../../../../../components/schemas/Channel.yaml"
+    401:
+      $ref: "../../../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../../../components/responses/ResourceNotFound.yaml"

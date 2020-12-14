@@ -28,3 +28,34 @@ post:
       $ref: "../../../../components/responses/NotAuthorized.yaml"
     404:
       $ref: "../../../../components/responses/ResourceNotFound.yaml"
+
+get:
+  tags:
+    - Patients
+    - Circle of Care Members
+  operationId: getPatientCcms
+  summary: Patient Circle of Care Members
+  description: Get Patient's Circle of Care Members Details
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../../components/parameters/PatientId.yaml"
+  responses:
+    200:
+      description: Patient's Circle of Care Members
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              pagination:
+                $ref: "../../../../components/schemas/PaginatedResults.yaml"
+              circle_of_care_members:
+                type: array
+                items:
+                  $ref: "../../../../components/schemas/CircleOfCareMember.yaml"
+    401:
+      $ref: "../../../../components/responses/NotAuthorized.yaml"
+    404:
+      $ref: "../../../../components/responses/ResourceNotFound.yaml"
