@@ -1,0 +1,35 @@
+post:
+  tags:
+    - Organizations
+  operationId: getTemplateContext
+  summary: Get Template Context
+  description: Get default values for the template depending on the context
+  security:
+    - service_token: []
+      user_token: []
+  parameters:
+    - $ref: "../../../components/parameters/TemplateName.yaml"
+  requestBody:
+    description: Template context details
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            templateName:
+              type: string
+              description: Unique Organization Template name
+              example: appointment_reminder_circle_of_care_member
+            context:
+              type: object
+              properties:
+                patient_id:
+                  type: number
+                  description: Patient ID of intended recipient
+                  example: 1324
+                circle_of_care_member_id:
+                  type: number
+                  description: Circle of Care Member ID of intended recipient
+                  example: 9134
+  # TODO(gualcm): write responses

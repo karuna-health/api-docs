@@ -136,10 +136,15 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                description: Array of available Templates
-                items:
-                  $ref: '#/components/schemas/Template'
+                type: object
+                properties:
+                  pagination:
+                    $ref: '#/components/schemas/PaginatedResults'
+                  templates:
+                    type: array
+                    description: Array of available Templates
+                    items:
+                      $ref: '#/components/schemas/Template'
         '401':
           $ref: '#/components/responses/NotAuthorized'
   /tokens/check:
@@ -1337,6 +1342,26 @@ components:
             Flag specifying whether a label can be manually assigned by a
             Navigator to Patient.
           example: true
+    PaginatedResults:
+      type: object
+      description: Pagination data
+      properties:
+        results:
+          type: number
+          description: Number of results included per page
+          example: 10
+        total:
+          type: number
+          description: Total count of results found for query
+          example: 512
+        page:
+          type: number
+          description: Current results page
+          example: 3
+        next:
+          type: string
+          description: Pointer to next results page. `null` if there is no next page.
+          example: 05d9a970030000000a04
     Organization:
       type: object
       description: Organization details
@@ -1988,26 +2013,6 @@ components:
             $ref: '#/components/schemas/ConversationReadMarker'
         current_navigator_read_marker:
           $ref: '#/components/schemas/CurrentNavigatorConversationReadMarker'
-    PaginatedResults:
-      type: object
-      description: Pagination data
-      properties:
-        results:
-          type: number
-          description: Number of results included per page
-          example: 10
-        total:
-          type: number
-          description: Total count of results found for query
-          example: 512
-        page:
-          type: number
-          description: Current results page
-          example: 3
-        next:
-          type: string
-          description: Pointer to next results page. `null` if there is no next page.
-          example: 05d9a970030000000a04
     Call:
       type: object
       description: Call details

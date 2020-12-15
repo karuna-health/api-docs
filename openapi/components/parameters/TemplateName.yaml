@@ -1,0 +1,7 @@
+in: path
+name: templateName
+description: Template Name
+schema:
+  type: string
+required: true
+example: appointment_reminder_circle_of_care_member

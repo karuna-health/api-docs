@@ -18,6 +18,7 @@ properties:
     description: Template title
     example: Regular Check-in
   organization:
+    # TODO(gualcm): I think we can simplify or remove this organization from the response
     $ref: "../../components/schemas/Organization.yaml"
   intended_recipients:
     type: array
@@ -46,6 +47,7 @@ properties:
       enum: [patient, circle_of_care_member]  
       example: circle_of_care_member
   # TODO(gualcm): complete this
+  # I think this is actually not used
   # defaults:
   #   type: object
   #   properties:

@@ -14,10 +14,15 @@ get:
       content:
         application/json:
           schema:
-            type: array
-            description: Array of available Templates
-            items:
-              # TODO(gualcm): Why is templates.organization different from the organization we get from organization/{slug}
-              $ref: "../../components/schemas/Template.yaml"
+            type: object
+            properties:
+              pagination:
+                $ref: "../../components/schemas/PaginatedResults.yaml"
+              templates:
+                type: array
+                description: Array of available Templates
+                items:
+                  # TODO(gualcm): Why is templates.organization different from the organization we get from organization/{slug}
+                  $ref: "../../components/schemas/Template.yaml"
     401:
       $ref: "../../components/responses/NotAuthorized.yaml"
