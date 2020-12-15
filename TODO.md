@@ -254,6 +254,6 @@ POST /languages/translate
 
 Templates
 
-GET /templates
+X GET /templates
 
 POST /templates/{templateName}/context

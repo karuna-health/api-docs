@@ -1,0 +1,129 @@
+# TODO(gualcm): what is messaging_service_id?
+# what is push_authentication?
+# what is push_service?
+# what are default_languages?
+# what are flags?
+# They're included in template.organization
+type: object
+description: Organization details
+properties:
+  name:
+    type: string
+    description: Organization's name
+    example: "Karuna Health"
+  phone_number:
+    type: string
+    description:
+      Organization's phone number. This is the number patients call
+      and receive messages from.
+    example: "+12345678987"
+  slug:
+    type: string
+    description: Organization's slug
+    example: "karuna"
+  office_number:
+    type: string
+    description:
+      Organization's office number. This is the number we can use to
+      contact the organization.
+    example: "+12345678987"
+  idle_timeout_minutes:
+    type: number
+    description:
+      Number of minutes of inactivity after which the navigator will
+      be logged out.
+    example: 180
+  support_admin_navigator_id:
+    type: number
+    description: Organization's admin navigator ID
+    example: 12352
+  record_calls:
+    type: boolean
+    description:
+      Flag specifying whether calls will be recorded by default
+    example: true
+  call_patient_first:
+    type: boolean
+    description:
+      Flag specifying whether patients will be called first.
+      Navigators are called first if set to `false`
+    example: true
+  twofactor_enabled:
+    type: boolean
+    description:
+      Flag specifying whether two factor auth is enabled for the
+      organization.
+    example: true
+  write_ehr_changes:
+    type: boolean
+    description:
+      Flag specifying whether changes will be written to the ehr.
+    example: false
+  disable_ip_pinning:
+    type: boolean
+    description: Dunno
+    example: false
+  disable_call_recording_announcement:
+    type: boolean
+    description:
+      Flag specifying whether the announcement of "This call may be
+      recorded" at the beginning of the call should be omitted.
+    example: false
+  check_passwords_against_leaks:
+    type: boolean
+    description:
+      Flag specifying whether navigator passwords are checked
+      against leaks.
+    example: false
+  permissioning_restrict_patients:
+    type: boolean
+    description:
+      Flag specifying whether permissioning is enabled for the
+      organization.
+    example: false
+  phone_login_enabled:
+    type: boolean
+    description: Dunno
+    example: false
+  pass_through_incoming_caller_id:
+    type: boolean
+    description:
+      Flag specifying whether the incoming caller id is passed
+      through to the navigators when connecting calls.
+    example: true
+  enable_daily_digest:
+    type: boolean
+    description:
+      Flag specifying whether the organization has Daily Digest
+      enabled.
+    example: true
+  disable_phone_calls:
+    type: boolean
+    description:
+      Flag specifying whether calls for the organization are
+      disabled.
+    example: false
+  enable_after_hours_responses:
+    type: boolean
+    description:
+      Flag specifying whether automatic responses for after hour
+      interactions are enabled.
+    example: true
+  enable_new_message_email_notifications:
+    type: boolean
+    description:
+      Flag specifying whether the organization has email
+      notifications enabled for new messages.
+    example: true
+  enable_campaigns:
+    type: boolean
+    description:
+      Flag specifying whether campaigns are enabled for the
+      organization
+    example: true
+  enable_demo_features:
+    type: boolean
+    description:
+      Flag specifying whether demo features are enabled for the
+      organization
+    example: true

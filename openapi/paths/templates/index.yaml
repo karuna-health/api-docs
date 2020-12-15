@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Organizations
+    # TODO(gualcm): maybe Messages, Interactions?
+  operationId: getAllTemplates
+  summary: Get Organization Templates
+  description: Get all Templates available for an Organization
+  security:
+    - service_token: []
+      user_token: []
+  responses:
+    200:
+      description: Available Templates
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Array of available Templates
+            items:
+              # TODO(gualcm): Why is templates.organization different from the organization we get from organization/{slug}
+              $ref: "../../components/schemas/Template.yaml"
+    401:
+      $ref: "../../components/responses/NotAuthorized.yaml"

@@ -1,0 +1,51 @@
+type: object
+description: Message Template
+properties:
+  id:
+    type: number
+    description: Template ID
+    example: 1923
+  name:
+    type: string
+    description: Unique Template name
+    example: regular_check_in_circle_of_care_member
+  body:
+    type: string
+    description: Message body
+    example: "Hi {{circle_of_care_member.first_name:string}}, how is {{patient.first_name:string}} feeling today?"
+  title:
+    type: string
+    description: Template title
+    example: Regular Check-in
+  organization:
+    $ref: "../../components/schemas/Organization.yaml"
+  intended_recipients:
+    type: array
+    description: Array specifying who the intended recipients are for the template.
+    items:
+      type: string
+      enum: [patient, circle_of_care_member]  
+      example: circle_of_care_member
+  tags:
+    type: array
+    description: Template tags
+    # TODO(gualcm): better description
+    items:
+      type: string
+      example: regular_check_in
+  # TODO(gualcm): complete this
+  # fragments:
+  #   type: array
+  dependencies:
+    type: array
+    description: Template dependencies
+    # TODO(gualcm): do we even use this?
+    # what is it for?
+    items:
+      type: string
+      enum: [patient, circle_of_care_member]  
+      example: circle_of_care_member
+  # TODO(gualcm): complete this
+  # defaults:
+  #   type: object
+  #   properties:

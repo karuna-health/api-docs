@@ -85,17 +85,17 @@ tags:
   - name: User Tokens
     description: These endpoints allow you to obtain a `user_token` and check its validity.
   - name: Organizations
-    description: Endpoints to manage organizations.
+    description: Endpoints to manage Organizations.
   - name: Patients
-    description: Endpoints to manage patients.
+    description: Endpoints to manage Patients.
   - name: Circle of Care Members
-    description: Endpoints to manage circle of care members.
+    description: Endpoints to manage Circle of Care Members.
   - name: Navigators
-    description: Endpoints to manage navigators.
+    description: Endpoints to manage Navigators.
   - name: Channels
-    description: Endpoints to manage channels.
+    description: Endpoints to manage Channels.
   - name: Interactions
-    description: Endpoints to manage interactions.
+    description: Endpoints to manage Interactions.
 paths:
   /labels:
     get:
@@ -118,6 +118,28 @@ paths:
                 description: Array of available Labels
                 items:
                   $ref: '#/components/schemas/Label'
+        '401':
+          $ref: '#/components/responses/NotAuthorized'
+  /templates:
+    get:
+      tags:
+        - Organizations
+      operationId: getAllTemplates
+      summary: Get Organization Templates
+      description: Get all Templates available for an Organization
+      security:
+        - service_token: []
+          user_token: []
+      responses:
+        '200':
+          description: Available Templates
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Array of available Templates
+                items:
+                  $ref: '#/components/schemas/Template'
         '401':
           $ref: '#/components/responses/NotAuthorized'
   /tokens/check:
@@ -180,152 +202,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: Organization's name
-                    example: Karuna Health
-                  phone_number:
-                    type: string
-                    description: >-
-                      Organization's phone number. This is the number patients
-                      call and receive messages from.
-                    example: '+12345678987'
-                  slug:
-                    type: string
-                    description: Organization's slug
-                    example: karuna
-                  office_number:
-                    type: string
-                    description: >-
-                      Organization's office number. This is the number we can
-                      use to contact the organization.
-                    example: '+12345678987'
-                  idle_timeout_minutes:
-                    type: number
-                    description: >-
-                      Number of minutes of inactivity after which the navigator
-                      will be logged out.
-                    example: 180
-                  support_admin_navigator_id:
-                    type: number
-                    description: Organization's admin navigator ID
-                    example: 12352
-                  record_calls:
-                    type: boolean
-                    description: Flag specifying whether calls will be recorded by default
-                    example: true
-                  call_patient_first:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether patients will be called first.
-                      Navigators are called first if set to `false`
-                    example: true
-                  twofactor_enabled:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether two factor auth is enabled for the
-                      organization.
-                    example: true
-                  write_ehr_changes:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether changes will be written to the
-                      ehr.
-                    example: false
-                  disable_ip_pinning:
-                    type: boolean
-                    description: Dunno
-                    example: false
-                  disable_call_recording_announcement:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether the announcement of "This call may
-                      be recorded" at the beginning of the call should be
-                      omitted.
-                    example: false
-                  check_passwords_against_leaks:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether navigator passwords are checked
-                      against leaks.
-                    example: false
-                  permissioning_restrict_patients:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether permissioning is enabled for the
-                      organization.
-                    example: false
-                  phone_login_enabled:
-                    type: boolean
-                    description: Dunno
-                    example: false
-                  pass_through_incoming_caller_id:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether the incoming caller id is passed
-                      through to the navigators when connecting calls.
-                    example: true
-                  enable_daily_digest:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether the organization has Daily Digest
-                      enabled.
-                    example: true
-                  disable_phone_calls:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether calls for the organization are
-                      disabled.
-                    example: false
-                  enable_after_hours_responses:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether automatic responses for after hour
-                      interactions are enabled.
-                    example: true
-                  enable_new_message_email_notifications:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether the organization has email
-                      notifications enabled for new messages.
-                    example: true
-                  enable_campaigns:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether campaigns are enabled for the
-                      organization
-                    example: true
-                  enable_demo_features:
-                    type: boolean
-                    description: >-
-                      Flag specifying whether demo features are enabled for the
-                      organization
-                    example: true
+                $ref: '#/components/schemas/Organization'
         '404':
-          description: Invalid organization slug
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    description: Type of error
-                    type: string
-                    example: resource_not_found
-                  error_code:
-                    description: Error code
-                    type: string
-                    example: 191
-                  message:
-                    description: Error message
-                    type: string
-                    example: Couldn't find that Organization
-                  retryable:
-                    description: Whether the request is retryable
-                    type: boolean
-                    example: false
+          $ref: '#/components/responses/ResourceNotFound'
   /patients:
     post:
       tags:
@@ -1458,6 +1337,170 @@ components:
             Flag specifying whether a label can be manually assigned by a
             Navigator to Patient.
           example: true
+    Organization:
+      type: object
+      description: Organization details
+      properties:
+        name:
+          type: string
+          description: Organization's name
+          example: Karuna Health
+        phone_number:
+          type: string
+          description: >-
+            Organization's phone number. This is the number patients call and
+            receive messages from.
+          example: '+12345678987'
+        slug:
+          type: string
+          description: Organization's slug
+          example: karuna
+        office_number:
+          type: string
+          description: >-
+            Organization's office number. This is the number we can use to
+            contact the organization.
+          example: '+12345678987'
+        idle_timeout_minutes:
+          type: number
+          description: >-
+            Number of minutes of inactivity after which the navigator will be
+            logged out.
+          example: 180
+        support_admin_navigator_id:
+          type: number
+          description: Organization's admin navigator ID
+          example: 12352
+        record_calls:
+          type: boolean
+          description: Flag specifying whether calls will be recorded by default
+          example: true
+        call_patient_first:
+          type: boolean
+          description: >-
+            Flag specifying whether patients will be called first. Navigators
+            are called first if set to `false`
+          example: true
+        twofactor_enabled:
+          type: boolean
+          description: >-
+            Flag specifying whether two factor auth is enabled for the
+            organization.
+          example: true
+        write_ehr_changes:
+          type: boolean
+          description: Flag specifying whether changes will be written to the ehr.
+          example: false
+        disable_ip_pinning:
+          type: boolean
+          description: Dunno
+          example: false
+        disable_call_recording_announcement:
+          type: boolean
+          description: >-
+            Flag specifying whether the announcement of "This call may be
+            recorded" at the beginning of the call should be omitted.
+          example: false
+        check_passwords_against_leaks:
+          type: boolean
+          description: >-
+            Flag specifying whether navigator passwords are checked against
+            leaks.
+          example: false
+        permissioning_restrict_patients:
+          type: boolean
+          description: >-
+            Flag specifying whether permissioning is enabled for the
+            organization.
+          example: false
+        phone_login_enabled:
+          type: boolean
+          description: Dunno
+          example: false
+        pass_through_incoming_caller_id:
+          type: boolean
+          description: >-
+            Flag specifying whether the incoming caller id is passed through to
+            the navigators when connecting calls.
+          example: true
+        enable_daily_digest:
+          type: boolean
+          description: Flag specifying whether the organization has Daily Digest enabled.
+          example: true
+        disable_phone_calls:
+          type: boolean
+          description: Flag specifying whether calls for the organization are disabled.
+          example: false
+        enable_after_hours_responses:
+          type: boolean
+          description: >-
+            Flag specifying whether automatic responses for after hour
+            interactions are enabled.
+          example: true
+        enable_new_message_email_notifications:
+          type: boolean
+          description: >-
+            Flag specifying whether the organization has email notifications
+            enabled for new messages.
+          example: true
+        enable_campaigns:
+          type: boolean
+          description: Flag specifying whether campaigns are enabled for the organization
+          example: true
+        enable_demo_features:
+          type: boolean
+          description: >-
+            Flag specifying whether demo features are enabled for the
+            organization
+          example: true
+    Template:
+      type: object
+      description: Message Template
+      properties:
+        id:
+          type: number
+          description: Template ID
+          example: 1923
+        name:
+          type: string
+          description: Unique Template name
+          example: regular_check_in_circle_of_care_member
+        body:
+          type: string
+          description: Message body
+          example: >-
+            Hi {{circle_of_care_member.first_name:string}}, how is
+            {{patient.first_name:string}} feeling today?
+        title:
+          type: string
+          description: Template title
+          example: Regular Check-in
+        organization:
+          $ref: '#/components/schemas/Organization'
+        intended_recipients:
+          type: array
+          description: Array specifying who the intended recipients are for the template.
+          items:
+            type: string
+            enum:
+              - patient
+              - circle_of_care_member
+            example: circle_of_care_member
+        tags:
+          type: array
+          description: Template tags
+          items:
+            type: string
+            example: regular_check_in
+        dependencies:
+          type: array
+          description: Template dependencies
+          items:
+            type: string
+            enum:
+              - patient
+              - circle_of_care_member
+            example: circle_of_care_member
     DefaultChannelId:
       type: number
       description: >-

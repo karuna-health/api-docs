@@ -90,26 +90,31 @@ tags:
       These endpoints allow you to obtain a `user_token` and check its validity.
 
   - name: Organizations
-    description: Endpoints to manage organizations.
+    description: Endpoints to manage Organizations.
 
   - name: Patients
-    description: Endpoints to manage patients.
+    description: Endpoints to manage Patients.
 
   - name: Circle of Care Members
-    description: Endpoints to manage circle of care members.
+    description: Endpoints to manage Circle of Care Members.
 
   - name: Navigators
-    description: Endpoints to manage navigators.
+    description: Endpoints to manage Navigators.
 
   - name: Channels
-    description: Endpoints to manage channels.
+    description: Endpoints to manage Channels.
 
   - name: Interactions
-    description: Endpoints to manage interactions.
+    description: Endpoints to manage Interactions.
+
+    # TODO(gualcm): maybe add Labels and Templates tag
 
 paths:
   /labels:
     $ref: "paths/labels.yaml"
+
+  /templates:
+    $ref: "paths/templates/index.yaml"
 
   /tokens/check:
     $ref: "paths/tokens/check.yaml"
