@@ -7,7 +7,7 @@ info:
     email: antares@meetkaruna.com
     url: "https://www.meetkaruna.com/"
   x-logo:
-    url: "https://karuna-health.github.io/api-docs/logo.png"
+    url: "https://developer.meetkaruna.com/logo.png"
   description: >
     # Integrating with Karuna
 
@@ -17,7 +17,7 @@ info:
     intuitive ways. Patients can have conversations with their care providers
     using tools and channels they already have access to (phone calls, SMS,
     email, etc.), and care providers can see all of these conversations in a
-    single shared inbox for each patient.  
+    single shared inbox for each patient.
 
 
     Karuna's APIs expose a broad set of platform functionality, and can be used
