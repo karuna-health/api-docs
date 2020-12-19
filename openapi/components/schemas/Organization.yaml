@@ -61,7 +61,7 @@ properties:
     example: false
   disable_ip_pinning:
     type: boolean
-    description: Dunno
+    description: Disable pinning sessions to IP addresses
     example: false
   disable_call_recording_announcement:
     type: boolean
@@ -80,10 +80,6 @@ properties:
     description:
       Flag specifying whether permissioning is enabled for the
       organization.
-    example: false
-  phone_login_enabled:
-    type: boolean
-    description: Dunno
     example: false
   pass_through_incoming_caller_id:
     type: boolean

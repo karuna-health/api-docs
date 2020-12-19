@@ -7,7 +7,7 @@ info:
     email: antares@meetkaruna.com
     url: 'https://www.meetkaruna.com/'
   x-logo:
-    url: 'https://karuna-health.github.io/api-docs/logo.png'
+    url: 'https://developer.meetkaruna.com/logo.png'
   description: >
     # Integrating with Karuna
 
@@ -17,7 +17,7 @@ info:
     intuitive ways. Patients can have conversations with their care providers
     using tools and channels they already have access to (phone calls, SMS,
     email, etc.), and care providers can see all of these conversations in a
-    single shared inbox for each patient.  
+    single shared inbox for each patient.
 
 
     Karuna's APIs expose a broad set of platform functionality, and can be used
@@ -1418,7 +1418,7 @@ components:
           example: false
         disable_ip_pinning:
           type: boolean
-          description: Dunno
+          description: Disable pinning sessions to IP addresses
           example: false
         disable_call_recording_announcement:
           type: boolean
@@ -1437,10 +1437,6 @@ components:
           description: >-
             Flag specifying whether permissioning is enabled for the
             organization.
-          example: false
-        phone_login_enabled:
-          type: boolean
-          description: Dunno
           example: false
         pass_through_incoming_caller_id:
           type: boolean
@@ -1586,10 +1582,6 @@ components:
           type: string
           description: Channel's identifier
           example: '+12345678987'
-        verified:
-          type: boolean
-          description: Dunno
-          example: false
         label:
           type: string
           description: Channel's label
@@ -1618,23 +1610,15 @@ components:
                 type:
                   type: string
                   example: 1
-        uuid:
-          type: string
-          description: Dunno
-          example: Dunno
         organization_id:
           type: number
           description: ID of organization to which the channel and channel owner belong
           example: 4
-        authenticated:
-          type: boolean
-          description: Dunno
-          example: false
         has_consent:
           type: boolean
           description: >-
-            Flag specifying whether the owner has granted consent for
-            communication over the channel
+            Flag specifying whether the owner has granted consent for exchanging
+            PHI over the channel
           example: true
     Channels:
       type: array
@@ -1762,11 +1746,11 @@ components:
               example: 27
             clinician_id:
               type: string
-              description: Dunno
-              example: Dunno
+              description: Third-party identifier for this Navigator
+              example: acdf318b-d9b0-4042-938c-4ebb6ef8f009
             preferred_medium:
               type: string
-              description: Dunno
+              description: async if no specific channel is marked as preferred
               example: async
             preferred_channel_id:
               type: number
@@ -1898,8 +1882,8 @@ components:
           example: file_upload
         default_medium:
           type: string
-          description: Dunno
-          example: Dunno
+          description: async if no specific channel is marked as preferred
+          example: async
         restricted:
           type: boolean
           description: >-
@@ -2068,8 +2052,10 @@ components:
           example: 89072
         title:
           type: string
-          description: Dunno
-          example: Dunno
+          description: >-
+            Title of the message; only applicable for certain channel types like
+            push or email.
+          example: New message
         body:
           type: string
           description: Message body
@@ -2100,8 +2086,8 @@ components:
           example: delivered
         id_from_channel:
           type: string
-          description: Dunno
-          example: Dunno
+          description: 'Third-party identifier from downstream service (e.g., Telnyx)'
+          example: 980c0e2d-c5c5-4a5e-95ee-4cd5cee3e02b
         interaction_id:
           type: number
           description: ID of interaction the message belongs to
@@ -2164,11 +2150,15 @@ components:
               example: conversation
             source:
               type: string
-              description: Dunno
+              description: >-
+                For incoming interactions, the name of the microservice that
+                processed the incoming message.
               example: nasdaq
             incoming_message_id:
               type: number
-              description: Dunno
+              description: >-
+                For incoming interactions, the internal ID for the incoming
+                Message
               example: 2345
         messages:
           type: array

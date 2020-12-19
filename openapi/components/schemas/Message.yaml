@@ -7,8 +7,10 @@ properties:
     example: 89072
   title:
     type: string
-    description: Dunno
-    example: Dunno
+    description:
+      Title of the message; only applicable for certain channel types like push
+      or email.
+    example: "New message"
   body:
     type: string
     description: Message body
@@ -35,8 +37,8 @@ properties:
     example: delivered
   id_from_channel:
     type: string
-    description: Dunno
-    example: Dunno
+    description: Third-party identifier from downstream service (e.g., Telnyx)
+    example: 980c0e2d-c5c5-4a5e-95ee-4cd5cee3e02b
   interaction_id:
     type: number
     description: ID of interaction the message belongs to

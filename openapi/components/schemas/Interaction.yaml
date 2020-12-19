@@ -53,11 +53,14 @@ properties:
         example: conversation
       source:
         type: string
-        description: Dunno
+        description:
+          For incoming interactions, the name of the microservice that processed
+          the incoming message.
         example: nasdaq
       incoming_message_id:
         type: number
-        description: Dunno
+        description:
+          For incoming interactions, the internal ID for the incoming Message
         example: 2345
   messages:
     type: array

@@ -14,10 +14,6 @@ properties:
     type: string
     description: Channel's identifier
     example: "+12345678987"
-  verified:
-    type: boolean
-    description: Dunno
-    example: false
   label:
     type: string
     description: Channel's label
@@ -46,22 +42,14 @@ properties:
           type:
             type: string
             example: 1
-  uuid:
-    type: string
-    description: Dunno
-    example: Dunno
   organization_id:
     type: number
     description:
       ID of organization to which the channel and channel owner belong
     example: 4
-  authenticated:
-    type: boolean
-    description: Dunno
-    example: false
   has_consent:
     type: boolean
     description:
-      Flag specifying whether the owner has granted consent for communication
+      Flag specifying whether the owner has granted consent for exchanging PHI
       over the channel
     example: true
